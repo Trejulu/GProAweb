@@ -1,0 +1,71 @@
+/* Variables CSS - Sistema de diseño GProA Technology */
+
+:root {
+    /* Colores principales */
+    --primary: #0a0e17;
+    --secondary: #0066ff;
+    --accent: #00e0ff;
+    --neon: #00f7ff;
+    --dark: #020617;
+    --card-bg: #1e293b;
+    --background: #0f172a;
+    --text: #94a3b8;
+    --text-light: #e0f2fe;
+    --text-white: #ffffff;
+
+    /* Gradientes */
+    --tech-gradient: linear-gradient(135deg, #0066ff 0%, #00e0ff 100%);
+    --tech-gradient-hover: linear-gradient(135deg, #00e0ff 0%, #0066ff 100%);
+
+    /* Efectos de luz */
+    --neon-glow: 0 0 15px rgba(0, 231, 255, 0.8);
+    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.3);
+    --neon-shadow: 0 0 20px rgba(0, 231, 255, 0.5);
+
+    /* Paleta Quantum Blue */
+    --deep-blue: #001a33;
+    --electric-blue: #0066ff;
+    --cyan: #00e0ff;
+    --light-cyan: #a2fff4;
+    --matrix-blue: #00ffea;
+
+    /* Efectos de cristal */
+    --glass-bg: rgba(0, 102, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 102, 255, 0.2);
+
+    /* Tipografía */
+    --font-primary: -apple-system, BlinkMacSystemFont, 'Exo 2', sans-serif;
+    --font-logo: 'Orbitron', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Espaciado */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+
+    /* Bordes */
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 20px;
+    --border-radius-full: 50px;
+
+    /* Transiciones */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.4s ease;
+
+    /* Z-index */
+    --z-background: -2;
+    --z-symbols: -1;
+    --z-content: 1;
+    --z-header: 1000;
+    --z-modal: 9999;
+    --z-cursor: 10000;
+}

@@ -1,0 +1,655 @@
+/* Métricas Gartner - Cuadrante Mágico y Análisis */
+
+.gartner-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xxl);
+}
+
+/* Introducción */
+.gartner-intro {
+    display: flex;
+    justify-content: center;
+}
+
+.intro-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--glass-shadow);
+    max-width: 900px;
+    text-align: center;
+}
+
+.intro-card h3 {
+    font-size: 1.8rem;
+    color: var(--cyan);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    position: relative;
+}
+
+.intro-card h3 i {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #00e0ff, #0066ff, #004cff);
+    color: white;
+    box-shadow: 0 12px 35px rgba(0, 224, 255, 0.5), 0 0 30px rgba(0, 224, 255, 0.4);
+    transition: all 0.6s ease;
+    position: relative;
+    animation: chart-pulse 4s infinite ease-in-out;
+}
+
+.intro-card h3 i::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00e0ff, #0066ff, #004cff);
+    z-index: -1;
+    filter: blur(12px);
+    opacity: 0.8;
+}
+
+@keyframes chart-pulse {
+    0% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 12px 35px rgba(0, 224, 255, 0.5), 0 0 30px rgba(0, 224, 255, 0.4);
+    }
+    25% {
+        transform: scale(1.08) rotate(5deg);
+        box-shadow: 0 18px 45px rgba(0, 224, 255, 0.7), 0 0 40px rgba(0, 224, 255, 0.6);
+    }
+    50% {
+        transform: scale(1.05) rotate(0deg);
+        box-shadow: 0 15px 40px rgba(0, 224, 255, 0.6), 0 0 35px rgba(0, 224, 255, 0.5);
+    }
+    75% {
+        transform: scale(1.08) rotate(-5deg);
+        box-shadow: 0 18px 45px rgba(0, 224, 255, 0.7), 0 0 40px rgba(0, 224, 255, 0.6);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 12px 35px rgba(0, 224, 255, 0.5), 0 0 30px rgba(0, 224, 255, 0.4);
+    }
+}
+
+.intro-card p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-xl);
+}
+
+/* Tipos de cuadrante */
+.quadrant-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+.quadrant-type {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background: var(--glass-bg);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--glass-border);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--glass-shadow);
+}
+
+.quadrant-type::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--tech-gradient);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.quadrant-type:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 102, 255, 0.3), 0 0 30px rgba(0, 224, 255, 0.4);
+    border-color: var(--cyan);
+}
+
+.quadrant-type:hover::before {
+    transform: scaleX(1);
+}
+
+.type-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.4s ease;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.type-icon::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: 50%;
+    background: inherit;
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0.7;
+}
+
+.type-icon.leaders {
+    background: linear-gradient(135deg, #ffd700, #ffed4e, #ffa500);
+    color: var(--dark);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4), 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.type-icon.visionaries {
+    background: linear-gradient(135deg, #00e0ff, #0066ff, #004cff);
+    box-shadow: 0 8px 25px rgba(0, 224, 255, 0.4), 0 0 20px rgba(0, 224, 255, 0.3);
+}
+
+.type-icon.challengers {
+    background: linear-gradient(135deg, #ff6b35, #ff8c42, #ff4500);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4), 0 0 20px rgba(255, 107, 53, 0.3);
+}
+
+.type-icon.niche {
+    background: linear-gradient(135deg, #8a2be2, #9d4edd, #7b68ee);
+    box-shadow: 0 8px 25px rgba(138, 43, 226, 0.4), 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
+.quadrant-type:hover .type-icon {
+    transform: scale(1.1) rotate(5deg);
+    filter: brightness(1.2);
+}
+
+.type-info h4 {
+    color: var(--text-white);
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.type-info p {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Sección del cuadrante */
+.gartner-quadrant-section {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--glass-shadow);
+    text-align: center;
+}
+
+.gartner-quadrant-section h3 {
+    font-size: 1.5rem;
+    color: var(--cyan);
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    position: relative;
+}
+
+.gartner-quadrant-section h3 i {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, #ff6b35, #ff8c42, #ffa500);
+    color: white;
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4), 0 0 25px rgba(255, 107, 53, 0.3);
+    transition: all 0.5s ease;
+    position: relative;
+    animation: pulse-glow 3s infinite ease-in-out;
+}
+
+.gartner-quadrant-section h3 i::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b35, #ff8c42, #ffa500);
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0.7;
+}
+
+@keyframes pulse-glow {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4), 0 0 25px rgba(255, 107, 53, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6), 0 0 35px rgba(255, 107, 53, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4), 0 0 25px rgba(255, 107, 53, 0.3);
+    }
+}
+
+.quadrant-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+#gartnerQuadrant {
+    border: 2px solid var(--glass-border);
+    border-radius: var(--border-radius-sm);
+    background: rgba(0, 26, 51, 0.3);
+    max-width: 100%;
+    height: auto;
+}
+
+.quadrant-legend {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-item.gproa .legend-dot {
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+}
+
+.legend-item.competitors .legend-dot {
+    background: var(--text);
+}
+
+/* Grid de métricas */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.metric-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--glass-shadow);
+    transition: var(--transition-slow);
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 102, 255, 0.3), 0 0 25px rgba(0, 224, 255, 0.4);
+    border-color: var(--cyan);
+}
+
+.metric-header {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.metric-header h3 {
+    font-size: 1.3rem;
+    color: var(--cyan);
+    margin-bottom: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    position: relative;
+}
+
+.metric-header h3 i {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: var(--tech-gradient);
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4), 0 0 20px rgba(0, 224, 255, 0.3);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.metric-header h3 i::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    border-radius: 50%;
+    background: var(--tech-gradient);
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0.6;
+}
+
+.metric-card:hover .metric-header h3 i {
+    transform: scale(1.1) rotate(10deg);
+    filter: brightness(1.3);
+    box-shadow: 0 12px 30px rgba(0, 102, 255, 0.5), 0 0 25px rgba(0, 224, 255, 0.4);
+}
+
+.metric-header p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 250px;
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.metric-insights {
+    display: flex;
+    justify-content: space-around;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.insight {
+    text-align: center;
+    padding: var(--spacing-sm);
+    background: rgba(0, 102, 255, 0.1);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid rgba(0, 224, 255, 0.2);
+    flex: 1;
+    min-width: 120px;
+}
+
+.insight-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+}
+
+.insight-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--cyan);
+    font-family: var(--font-mono);
+}
+
+/* Análisis estratégico */
+.gartner-analysis {
+    display: flex;
+    justify-content: center;
+}
+
+.analysis-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    box-shadow: var(--glass-shadow);
+    max-width: 1000px;
+    width: 100%;
+}
+
+.analysis-card h3 {
+    font-size: 1.5rem;
+    color: var(--cyan);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    position: relative;
+}
+
+.analysis-card h3 i {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    background: linear-gradient(135deg, #8a2be2, #9d4edd, #7b68ee);
+    color: white;
+    box-shadow: 0 12px 35px rgba(138, 43, 226, 0.5), 0 0 30px rgba(138, 43, 226, 0.4);
+    transition: all 0.5s ease;
+    position: relative;
+    animation: microscope-scan 5s infinite ease-in-out;
+}
+
+.analysis-card h3 i::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8a2be2, #9d4edd, #7b68ee);
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0.7;
+}
+
+@keyframes microscope-scan {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 12px 35px rgba(138, 43, 226, 0.5), 0 0 30px rgba(138, 43, 226, 0.4);
+    }
+    30% {
+        transform: scale(1.06);
+        box-shadow: 0 16px 40px rgba(138, 43, 226, 0.7), 0 0 35px rgba(138, 43, 226, 0.6);
+    }
+    60% {
+        transform: scale(1.03);
+        box-shadow: 0 14px 38px rgba(138, 43, 226, 0.6), 0 0 32px rgba(138, 43, 226, 0.5);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 12px 35px rgba(138, 43, 226, 0.5), 0 0 30px rgba(138, 43, 226, 0.4);
+    }
+}
+
+.analysis-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.strength-item,
+.opportunity-item {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.strength-icon,
+.opportunity-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.strength-icon {
+    background: linear-gradient(135deg, #10b981, #34d399);
+    color: white;
+}
+
+.opportunity-icon {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    color: white;
+}
+
+.strength-text h4,
+.opportunity-text h4 {
+    color: var(--text-white);
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.strength-text ul,
+.opportunity-text ul {
+    list-style: none;
+}
+
+.strength-text li,
+.opportunity-text li {
+    color: var(--text-light);
+    margin-bottom: var(--spacing-xs);
+    position: relative;
+    padding-left: var(--spacing-md);
+    line-height: 1.5;
+}
+
+.strength-text li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: bold;
+}
+
+.opportunity-text li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #f59e0b;
+    font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .quadrant-types {
+        grid-template-columns: 1fr;
+    }
+    
+    .quadrant-type {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .analysis-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .strength-item,
+    .opportunity-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .metric-insights {
+        flex-direction: column;
+    }
+    
+    #gartnerQuadrant {
+        width: 100%;
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gartner-container {
+        gap: var(--spacing-lg);
+    }
+    
+    .intro-card,
+    .gartner-quadrant-section,
+    .metric-card,
+    .analysis-card {
+        padding: var(--spacing-lg);
+    }
+    
+    .quadrant-legend {
+        flex-direction: column;
+        align-items: center;
+    }
+}

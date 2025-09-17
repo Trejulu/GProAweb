@@ -1,0 +1,204 @@
+/* Animaciones y efectos especiales */
+
+/* Símbolos flotantes */
+.floating-symbols {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-symbols);
+    pointer-events: none;
+    opacity: 0.15;
+}
+
+.code-symbol {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    color: rgba(0, 224, 255, 0.7);
+    text-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
+    opacity: 0;
+    animation: floatSymbol 15s infinite linear;
+}
+
+@keyframes floatSymbol {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Marca de agua IA */
+#ai-watermark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1677442135133-33d364e7d1b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY3OTY0MTA0Nw&ixlib=rb-4.0.3&q=80&w=1080');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+    z-index: var(--z-background);
+    pointer-events: none;
+}
+
+/* Cursor personalizado */
+.custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: rgba(0, 224, 255, 0.5);
+    pointer-events: none;
+    z-index: var(--z-cursor);
+    mix-blend-mode: screen;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width var(--transition-normal), height var(--transition-normal), background-color var(--transition-normal);
+    display: none;
+}
+
+.cursor-trail {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(0, 102, 255, 0.3);
+    pointer-events: none;
+    z-index: calc(var(--z-cursor) - 1);
+    transform: translate(-50%, -50%);
+    transition: transform var(--transition-slow), opacity var(--transition-slow);
+    opacity: 0;
+}
+
+/* Efecto Matrix Rain */
+.matrix-rain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-symbols);
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* Animaciones de entrada */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Clases de animación */
+.fade-in-up {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-in {
+    animation: slideInUp 0.6s ease forwards;
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+.float-animation {
+    animation: float 2s infinite ease-in-out;
+}
+
+/* Optimización para dispositivos móviles */
+@media only screen and (max-device-width: 812px) and (-webkit-min-device-pixel-ratio: 3) {
+    /* Desactivar animaciones complejas en móviles para mejor rendimiento */
+    .code-symbol {
+        animation: none;
+    }
+    
+    .floating-symbols {
+        display: none;
+    }
+    
+    .custom-cursor,
+    .cursor-trail {
+        display: none;
+    }
+    
+    /* Optimización de animaciones para iOS */
+    .service-card,
+    .service-feature,
+    .tech-card,
+    .team-member {
+        transform: translateZ(0);
+        will-change: transform;
+    }
+    
+    .scroll-down i {
+        animation: none;
+    }
+}
