@@ -741,6 +741,48 @@
         </div>
     </div>
 
+    <div id="add-patient-modal"
+        class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center hidden z-50">
+        <div class="glass-pane rounded-lg p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6 text-white">Agregar Nuevo Paciente</h2>
+            <form id="add-patient-form" class="space-y-4">
+                <div>
+                    <label for="new-patient-name" class="text-sm font-medium text-gray-400">Nombre Completo</label>
+                    <input type="text" id="new-patient-name" class="form-input mt-1" required>
+                </div>
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label for="new-patient-age" class="text-sm font-medium text-gray-400">Edad</label>
+                        <input type="number" id="new-patient-age" class="form-input mt-1" min="1" max="120" required>
+                    </div>
+                    <div>
+                        <label for="new-patient-gender" class="text-sm font-medium text-gray-400">Género</label>
+                        <select id="new-patient-gender" class="form-input mt-1" required>
+                            <option value="">Seleccionar</option>
+                            <option>Masculino</option>
+                            <option>Femenino</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="new-patient-ethnicity" class="text-sm font-medium text-gray-400">Etnicidad</label>
+                        <select id="new-patient-ethnicity" class="form-input mt-1" required>
+                            <option value="">Seleccionar</option>
+                            <option>Caucásico</option>
+                            <option>Hispano</option>
+                            <option>Afroamericano</option>
+                            <option>Asiático</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-4 pt-4">
+                    <button type="button" id="cancel-add-patient" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Agregar Paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="explanation-modal"
         class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center hidden z-50">
         <div class="glass-pane rounded-lg p-8 w-full max-w-2xl max-h-[90vh] flex flex-col">
@@ -940,6 +982,12 @@
             const doctorForm = document.getElementById('doctor-form');
             const cancelDoctorEditBtn = document.getElementById('cancel-doctor-edit');
             const doctorDisplayEl = document.getElementById('doctor-display');
+
+            // Add Patient Modal Elements
+            const addPatientModal = document.getElementById('add-patient-modal');
+            const addPatientBtn = document.getElementById('add-patient-btn');
+            const addPatientForm = document.getElementById('add-patient-form');
+            const cancelAddPatientBtn = document.getElementById('cancel-add-patient');
 
             // Explanation Modal Elements
             const explanationModal = document.getElementById('explanation-modal');
@@ -1201,6 +1249,32 @@
                 updateCharts(patient.riskScore, patient.riskScore ? patient.contributions : {});
             }
 
+            // Function addNewPatient
+            function addNewPatient(patientData) {
+                const newId = patients.length + 1;
+                const newPatient = {
+                    id: newId,
+                    name: patientData.name,
+                    age: patientData.age,
+                    gender: patientData.gender,
+                    ethnicity: patientData.ethnicity,
+                    params: {
+                        imc: 0,
+                        waist: 0,
+                        glucose: 0,
+                        hba1c: 0,
+                        sbp: 0,
+                        family: 0
+                    },
+                    riskScore: null,
+                    riskCategory: 'PENDIENTE',
+                    recommendationText: ''
+                };
+
+                patients.push(newPatient);
+                renderPatientList(searchInput.value);
+            }
+
             // Function handleFormSubmission
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -1312,14 +1386,171 @@
             });
 
 
-            // Function generateRiskPDF (Simplified implementation using html2canvas/jspdf)
-            function generateRiskPDF(patient) {
-                alert("Generando PDF (función simplificada para demo)");
-                // ... (Original PDF generation logic) ...
+            // Function generateRiskPDF (Implementation using html2canvas/jspdf)
+            async function generateRiskPDF(patient) {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+
+                // PDF dimensions
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 20;
+                let yPosition = margin;
+
+                // Colors
+                const primaryColor = [88, 166, 255]; // Blue
+                const secondaryColor = [201, 209, 217]; // Light gray
+                const riskColors = {
+                    BAJA: [46, 160, 67],
+                    MODERADA: [240, 173, 78],
+                    ALTA: [217, 83, 79],
+                    PENDIENTE: [48, 54, 61]
+                };
+
+                // Helper function to add text with word wrap
+                const addWrappedText = (text, x, y, maxWidth, fontSize = 12) => {
+                    pdf.setFontSize(fontSize);
+                    const lines = pdf.splitTextToSize(text, maxWidth);
+                    pdf.text(lines, x, y);
+                    return y + (lines.length * fontSize * 0.4);
+                };
+
+                // Helper function to add section header
+                const addSectionHeader = (title, y) => {
+                    pdf.setFillColor(...primaryColor);
+                    pdf.rect(margin, y - 5, pageWidth - 2 * margin, 10, 'F');
+                    pdf.setTextColor(255, 255, 255);
+                    pdf.setFontSize(14);
+                    pdf.text(title, margin + 5, y + 2);
+                    pdf.setTextColor(0, 0, 0);
+                    return y + 15;
+                };
+
+                try {
+                    // Header
+                    pdf.setFontSize(20);
+                    pdf.setTextColor(...primaryColor);
+                    pdf.text('GLucAI - Reporte de Riesgo de Diabetes', margin, yPosition);
+                    yPosition += 15;
+
+                    // Doctor and Date info
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(100, 100, 100);
+                    pdf.text(`Dr. ${doctorInfo.name} - ${doctorInfo.title}`, margin, yPosition);
+                    pdf.text(`Fecha: ${new Date().toLocaleDateString('es-ES')}`, pageWidth - margin - 50, yPosition);
+                    yPosition += 10;
+
+                    // Patient Information Section
+                    yPosition = addSectionHeader('Información del Paciente', yPosition);
+
+                    pdf.setFontSize(12);
+                    pdf.setTextColor(0, 0, 0);
+                    const patientInfo = [
+                        `Nombre: ${patient.name}`,
+                        `Edad: ${patient.age} años`,
+                        `Género: ${patient.gender}`,
+                        `Etnicidad: ${patient.ethnicity}`
+                    ];
+
+                    patientInfo.forEach(info => {
+                        pdf.text(info, margin, yPosition);
+                        yPosition += 6;
+                    });
+                    yPosition += 5;
+
+                    // Risk Assessment Section
+                    yPosition = addSectionHeader('Evaluación de Riesgo', yPosition);
+
+                    pdf.setFontSize(14);
+                    pdf.setTextColor(...riskColors[patient.riskCategory]);
+                    pdf.text(`Riesgo: ${patient.riskCategory} (${patient.riskScore}%)`, margin, yPosition);
+                    yPosition += 10;
+
+                    // Parameters Table
+                    pdf.setFontSize(10);
+                    pdf.setTextColor(0, 0, 0);
+                    const params = patient.params;
+                    const paramLabels = ['IMC (kg/m²)', 'Cintura (cm)', 'Glucosa Ayunas (mg/dL)', 'HbA1c (%)', 'Presión Sistólica (mmHg)', 'Antecedentes Familiares'];
+                    const paramValues = [params.imc, params.waist, params.glucose, params.hba1c, params.sbp, params.family ? 'Sí' : 'No'];
+
+                    // Table header
+                    pdf.setFillColor(240, 240, 240);
+                    pdf.rect(margin, yPosition - 3, pageWidth - 2 * margin, 8, 'F');
+                    pdf.text('Parámetro', margin + 2, yPosition + 2);
+                    pdf.text('Valor', pageWidth - margin - 30, yPosition + 2);
+                    yPosition += 10;
+
+                    // Table rows
+                    paramLabels.forEach((label, index) => {
+                        if (yPosition > pageHeight - 30) {
+                            pdf.addPage();
+                            yPosition = margin;
+                        }
+                        pdf.text(label, margin + 2, yPosition);
+                        pdf.text(paramValues[index].toString(), pageWidth - margin - 30, yPosition);
+                        yPosition += 6;
+                    });
+                    yPosition += 10;
+
+                    // Charts Section
+                    if (yPosition > pageHeight - 80) {
+                        pdf.addPage();
+                        yPosition = margin;
+                    }
+                    yPosition = addSectionHeader('Visualización de Riesgo', yPosition);
+
+                    // Capture gauge chart
+                    const gaugeCanvas = document.getElementById('riskGaugeChart');
+                    if (gaugeCanvas) {
+                        const gaugeImg = await html2canvas(gaugeCanvas, { scale: 2 });
+                        const gaugeImgData = gaugeImg.toDataURL('image/png');
+                        pdf.addImage(gaugeImgData, 'PNG', margin, yPosition, 80, 60);
+                    }
+
+                    // Capture factor chart
+                    const factorCanvas = document.getElementById('factorChart');
+                    if (factorCanvas) {
+                        const factorImg = await html2canvas(factorCanvas, { scale: 2 });
+                        const factorImgData = factorImg.toDataURL('image/png');
+                        pdf.addImage(factorImgData, 'PNG', pageWidth - margin - 80, yPosition, 80, 60);
+                    }
+                    yPosition += 70;
+
+                    // Recommendations Section
+                    if (patient.recommendationText) {
+                        if (yPosition > pageHeight - 50) {
+                            pdf.addPage();
+                            yPosition = margin;
+                        }
+                        yPosition = addSectionHeader('Recomendaciones de IA', yPosition);
+
+                        // Clean HTML and convert to plain text
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = patient.recommendationText;
+                        const plainText = tempDiv.textContent || tempDiv.innerText || '';
+
+                        yPosition = addWrappedText(plainText, margin, yPosition, pageWidth - 2 * margin, 10);
+                    }
+
+                    // Footer
+                    pdf.setFontSize(8);
+                    pdf.setTextColor(150, 150, 150);
+                    pdf.text('Este reporte es generado por GLucAI - IA para la prevención de Diabetes Tipo 2', margin, pageHeight - 10);
+                    pdf.text('Versión DEMO - No constituye diagnóstico médico oficial', margin, pageHeight - 5);
+
+                    // Save PDF
+                    pdf.save(`reporte_riesgo_${patient.name.replace(/\s+/g, '_')}.pdf`);
+
+                    alert('PDF generado exitosamente');
+
+                } catch (error) {
+                    console.error('Error generating PDF:', error);
+                    alert('Error al generar el PDF. Revisa la consola para más detalles.');
+                }
             }
-            pdfBtn.addEventListener('click', () => {
+            pdfBtn.addEventListener('click', async () => {
                 const patient = patients.find(p => p.id == selectedPatientId);
-                if (patient) generateRiskPDF(patient);
+                if (patient) await generateRiskPDF(patient);
             });
 
             // Doctor Modal Listeners
@@ -1341,6 +1572,48 @@
                 doctorInfo.license = document.getElementById('doctor-license').value;
                 updateDoctorDisplay();
                 doctorModal.classList.add('hidden');
+            });
+
+            // Add Patient Modal Listeners
+            addPatientBtn.addEventListener('click', () => {
+                addPatientModal.classList.remove('hidden');
+            });
+
+            cancelAddPatientBtn.addEventListener('click', () => {
+                addPatientModal.classList.add('hidden');
+                addPatientForm.reset();
+            });
+
+            addPatientForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Collect form data
+                const newPatient = {
+                    name: document.getElementById('new-patient-name').value.trim(),
+                    age: parseInt(document.getElementById('new-patient-age').value),
+                    gender: document.getElementById('new-patient-gender').value,
+                    ethnicity: document.getElementById('new-patient-ethnicity').value
+                };
+
+                // Basic validation
+                if (!newPatient.name || !newPatient.age || !newPatient.gender || !newPatient.ethnicity) {
+                    alert('Por favor, complete todos los campos.');
+                    return;
+                }
+
+                if (newPatient.age < 1 || newPatient.age > 120) {
+                    alert('La edad debe estar entre 1 y 120 años.');
+                    return;
+                }
+
+                // Add patient to array
+                addNewPatient(newPatient);
+
+                // Close modal and reset form
+                addPatientModal.classList.add('hidden');
+                addPatientForm.reset();
+
+                alert(`Paciente "${newPatient.name}" agregado exitosamente.`);
             });
 
             // Explanation Modal Listeners
