@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>GProA Technology | Innovación en Desarrollo de Software</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta name="theme-color" content="#00e0ff">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    <meta name="theme-color" content="#00e0ff">
+
+    <!-- Meta tags -->
+    <meta name="description"
+        content="GProA Technology - Líderes en automatización industrial inteligente y desarrollo de software con IA">
+    <meta name="keywords"
+        content="IA, automatización, software, tecnología, ingeniería, GECRAI, GIACELIA, GlucAI, SAIyDD">
+    <meta name="author" content="GProA Technology">
+    <meta name="theme-color" content="#00e0ff">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Organizados -->
+    <!-- Base -->
+    <link rel="stylesheet" href="css/base/variables.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+
+    <!-- Layout -->
+    <link rel="stylesheet" href="css/layout/navigation.css">
+    <link rel="stylesheet" href="css/layout/footer.css">
+
+    <!-- Components -->
+    <link rel="stylesheet" href="css/components/hero.css">
+    <link rel="stylesheet" href="css/components/sections.css">
+    <link rel="stylesheet" href="css/components/contact.css">
+    <link rel="stylesheet" href="css/components/modals.css">
+    <link rel="stylesheet" href="css/components/gartner.css">
+
+    <!-- Effects -->
+    <link rel="stylesheet" href="css/effects/animations.css">
+
+    <style>
+        /* Estilos para las gráficas */
+        .chart-container {
+            background: rgba(0, 10, 20, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 224, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 224, 255, 0.1);
+            height: 300px;
+        }
+
+        /* Estilos para el chat */
+        .chat-interface {
+            background: rgba(0, 10, 20, 0.5);
+            border-radius: 15px;
+            padding: 20px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 224, 255, 0.2);
+            background: rgba(0, 10, 20, 0.3);
+            color: #e0f2fe;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #0066ff, #00e0ff);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 224, 255, 0.2);
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: rgba(0, 102, 255, 0.2);
+            margin-left: auto;
+        }
+
+        .assistant-message {
+            background: rgba(0, 224, 255, 0.1);
+            margin-right: auto;
+        }
+    </style>
+    <!-- Chart.js para gráficas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Socket.io para el chat en tiempo real -->
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYMDE9BKLV"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-0HVQBRPTWY');
+    </script>
+
+</head>
+
+<body>
+    <!-- Marca de agua IA -->
+    <div id="ai-watermark"></div>
+
+    <!-- Símbolos flotantes -->
+    <div class="floating-symbols" id="symbolsContainer"></div>
+
+    <!-- Cursor personalizado -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <!-- Matrix Rain Effect -->
+    <canvas class="matrix-rain"></canvas>
+
+    <!-- Navegación -->
+    <nav class="main-nav">
+        <a href="#inicio" class="nav-logo">GProA<span>Technology</span></a>
+        <div class="nav-links">
+            <a href="#inicio" class="nav-link">Inicio</a>
+            <a href="#servicios" class="nav-link">Servicios</a>
+            <a href="#tecnologias" class="nav-link">Tecnologías</a>
+            <a href="#proyectos" class="nav-link">Proyectos</a>
+            <a href="#metricas" class="nav-link">Métricas Gartner</a>
+            <a href="#equipo" class="nav-link">Equipo</a>
+            <a href="#contacto" class="nav-link">Contacto</a>
+        </div>
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <!-- Navegación móvil -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="close-menu" id="closeMenu">
+            <i class="fas fa-times"></i>
+        </div>
+        <a href="#inicio" class="nav-link">Inicio</a>
+        <a href="#servicios" class="nav-link">Servicios</a>
+        <a href="#tecnologias" class="nav-link">Tecnologías</a>
+        <a href="#proyectos" class="nav-link">Proyectos</a>
+        <a href="#metricas" class="nav-link">Métricas Gartner</a>
+        <a href="#equipo" class="nav-link">Equipo</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="quantum-portal" id="inicio">
+        <canvas id="particleCanvas"></canvas>
+
+        <div class="execution-sphere" id="execSphere">
+            <div class="logo-container">
+                <div class="holographic-effect"></div>
+                <div class="logo-center">
+                    <div class="logo-gproa">GProA</div>
+                    <div class="logo-technology">Technology</div>
+                </div>
+            </div>
+            <div class="connection-node node-1"></div>
+            <div class="connection-node node-2"></div>
+            <div class="connection-node node-3"></div>
+            <div class="connection-node node-4"></div>
+        </div>
+
+        <div class="slogan-container">
+            <div class="slogan-text">Transformando ideas en</div>
+            <div class="rotating-words">
+                <div class="rotating-word">REALIDAD DIGITAL</div>
+                <div class="rotating-word">SOLUCIONES INTELIGENTES</div>
+                <div class="rotating-word">INNOVACIÓN Y VANGUARDIA</div>
+            </div>
+        </div>
+
+        <div class="services-container">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <h3 class="service-title">Consultoría y Desarrollo de Ingenierías de Proyectos</h3>
+                <p class="service-description">Soluciones avanzadas con enfoque en innovación y eficiencia para el
+                    sector industrial, hospitalario, didáctico/educativo infantil, jurídico, hotelería y más...</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <h3 class="service-title">Optimización de Proyectos con Programas Ejecutables</h3>
+                <p class="service-description">Software especializado para aplicaciones industriales y empresariales</p>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="service-title">Desarrollo con IA</h3>
+                <p class="service-description">Soluciones inteligentes con aprendizaje automático y algoritmos "machine
+                    learning", redes neuronales.</p>
+            </div>
+        </div>
+
+        <div class="version-badge">INNOVACIÓN EN DESARROLLO DE SOFTWARE</div>
+
+        <a href="#servicios" class="scroll-down">
+            <span>Explorar</span>
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- Servicios -->
+    <section class="content-section" id="servicios">
+        <div class="section-title">
+            <h2>Soluciones Inteligentes con Impacto</h2>
+            <p>En GProA integramos tecnologías emergentes para diseñar soluciones que transforman industrias y mejoran
+                la vida de las personas.</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-feature">
+                <h3><i class="fas fa-microchip"></i> Automatización Cognitiva</h3>
+                <p>Desarrollamos soluciones que combinan automatización industrial con inteligencia artificial:</p>
+                <ul class="feature-list">
+                    <li>Robótica y procesos autónomos con IA</li>
+                    <li>Asistentes virtuales para entornos técnicos</li>
+                    <li>Automatización de análisis normativo y legal</li>
+                    <li>RPA adaptado a sistemas industriales y administrativos</li>
+                    <li>Interoperabilidad con plataformas existentes</li>
+                </ul>
+            </div>
+
+            <div class="service-feature">
+                <h3><i class="fas fa-brain"></i> IA Generativa Aplicada</h3>
+                <p>Aplicamos modelos generativos para resolver desafíos técnicos complejos:</p>
+                <ul class="feature-list">
+                    <li>Generación de cálculos eléctricos y reportes técnicos (GECRAI)</li>
+                    <li>Diseño de soluciones médicas y educativas personalizadas</li>
+                    <li>Optimización predictiva en instalaciones industriales</li>
+                    <li>IA para jurisprudencia y análisis legal</li>
+                    <li>Prototipos asistidos por inteligencia artificial</li>
+                </ul>
+            </div>
+
+            <div class="service-feature">
+                <h3><i class="fas fa-cogs"></i> Sistemas Autónomos Inteligentes</h3>
+                <p>Creamos sistemas que aprenden, evolucionan y optimizan continuamente:</p>
+                <ul class="feature-list">
+                    <li>Arquitecturas de autoaprendizaje adaptativo</li>
+                    <li>Simulación de escenarios con gemelos digitales</li>
+                    <li>Plataformas multiagente para ingeniería y salud</li>
+                    <li>Monitoreo inteligente para mantenimiento predictivo</li>
+                    <li>Soluciones con impacto en automatización, salud y legalidad</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tecnologías -->
+    <section class="content-section" id="tecnologias">
+        <div class="section-title">
+            <h2>Desarrollo Tecnológico Avanzado</h2>
+            <p>En GProA aplicamos metodologías ágiles y tecnologías emergentes para construir soluciones escalables,
+                intuitivas y sostenibles.</p>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h3>Desarrollo Full Stack Inteligente</h3>
+                <p>Aplicamos frameworks modernos como Next.js, React y Tailwind CSS para crear aplicaciones robustas,
+                    eficientes y responsivas desde la nube.</p>
+            </div>
+
+            <div class="tech-card">
+                <h3>Integración con Inteligencia Artificial</h3>
+                <p>Integramos APIs de IA generativa, copilots personalizados y lógica basada en modelos para potenciar
+                    procesos industriales, administrativos o médicos.</p>
+            </div>
+
+            <div class="tech-card">
+                <h3>Plataformas colaborativas con GitHub</h3>
+                <p>Gestión de versiones, despliegue automatizado (CI/CD) y trabajo colaborativo en entornos como Vercel,
+                    GitHub Actions y entornos locales con Cursor.</p>
+            </div>
+
+            <div class="tech-card">
+                <h3>Desarrollo Autónomo Guiado por IA</h3>
+                <p>Utilizamos entornos como Cursor + GitHub Copilot para acelerar el desarrollo de código, debug y
+                    pruebas, reduciendo tiempos y errores humanos.</p>
+            </div>
+
+            <div class="tech-card">
+                <h3>Interfaz Gráfica y Visualización de Datos</h3>
+                <p>Diseñamos dashboards técnicos con visualización avanzada, integración de gráficos (D3.js, Recharts) y
+                    representación de información técnica o clínica.</p>
+            </div>
+
+            <div class="tech-card">
+                <h3>Despliegue Global y Escalable</h3>
+                <p>Publicamos en la nube con Vercel, dominios propios y CDN para máxima velocidad. Nuestras soluciones
+                    escalan automáticamente y están listas para producción.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proyectos -->
+    <section class="content-section" id="proyectos">
+        <div class="section-title">
+            <h2>Proyectos de Innovación en IA</h2>
+            <p>Soluciones avanzadas desarrolladas por nuestro equipo para transformar industrias y procesos</p>
+        </div>
+
+        <div class="projects-container">
+            <div class="project-tabs">
+                <div class="project-tab active" data-tab="gecrai">GECRAI 1.1</div>
+                <div class="project-tab" data-tab="giacelia">GIACELIA 1.1</div>
+                <div class="project-tab" data-tab="glucai">GlucAI 1.5</div>
+                <div class="project-tab" data-tab="saiydd">SAIyDD 1.1</div>
+            </div>
+
+            <div class="project-content active" id="gecrai">
+                <div class="project-card">
+                    <h3>Generador de Consultas Regulatorias con Asistencia Inteligente</h3>
+                    <p>Asistente virtual para consulta de normativas eléctricas con procesamiento de lenguaje natural
+                        avanzado y generación automática de diagramas.</p>
+                    <ul class="project-features">
+                        <li>Generación automática de memorias de cálculo en PDF con estándares profesionales</li>
+                        <li>IA integrada para optimización de conductores, protecciones y balance de cargas</li>
+                        <li>Cálculo avanzado de caída de tensión, corriente de cortocircuito y Arc Flash (IEEE
+                            1584-2018)</li>
+                        <li>Diseño de sistemas de tierras físicas y canalizaciones (PVC, charola, EMT)</li>
+                        <li>Integración con AutoCAD y Revit para generación de planos en DXF/DWG</li>
+                        <li>Validación en tiempo real de cumplimiento NOM-001-SEDE-2012</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-content" id="giacelia">
+                <div class="project-card">
+                    <h3>Plataforma de Ingeniería Automatizada para Control y Automatización Industrial</h3>
+                    <p>GIACELIA es una solución impulsada por IA que automatiza el diseño, simulación y validación de
+                        sistemas de control eléctrico y automatización industrial.</p>
+                    <ul class="project-features">
+                        <li>Generación automática de ingenierías completas, incluyendo memorias de cálculo</li>
+                        <li>Modelado inteligente de sistemas: desde lógica cableada hasta PLCs</li>
+                        <li>Simulación de escenarios dinámicos (arranque de motores, respuesta a fallas)</li>
+                        <li>Optimización de esquemas de control mediante IA</li>
+                        <li>Integración nativa con software CAD/CAE</li>
+                        <li>Análisis predictivo de riesgos eléctricos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-content" id="glucai">
+                <div class="project-header">
+                    <h2>GlucAI 1.5</h2>
+                    <a href="glucai.html" class="button primary">Ver Más Detalles</a>
+                </div>
+                <div class="project-card">
+                    <h3>Plataforma de Inteligencia Artificial para Monitoreo y Gestión de Diabetes</h3>
+                    <p>GlucAI es un sistema especializado en diagnóstico predictivo, monitoreo continuo y
+                        recomendaciones personalizadas para pacientes con diabetes.</p>
+                    <ul class="project-features">
+                        <li>Predicción de episodios de hipo/hiperglucemia mediante machine learning</li>
+                        <li>Integración con dispositivos wearables</li>
+                        <li>Generación automática de reportes clínicos detallados</li>
+                        <li>Plataforma HIPAA-compliant con cifrado end-to-end</li>
+                        <li>Interfaz adaptativa para médicos, pacientes y familiares</li>
+                        <li>Recomendaciones personalizadas de tratamiento</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="project-content" id="saiydd">
+                <div class="project-card">
+                    <h3>Sistema de Aprendizaje Inclusivo con IA para Niños con Diversidad Cognitiva</h3>
+                    <p>SAIyDD es una plataforma educativa especializada en aprendizaje adaptativo para niños con
+                        condiciones del espectro autista y otras diferencias cognitivas.</p>
+                    <ul class="project-features">
+                        <li>Perfiles de aprendizaje personalizados adaptados a necesidades neurodiversas</li>
+                        <li>Módulos para desarrollar habilidades socioemocionales y comunicación</li>
+                        <li>Tecnología de procesamiento de lenguaje natural para desarrollo del habla</li>
+                        <li>Sistema de análisis de patrones conductuales</li>
+                        <li>Interfaces adaptables sensorialmente</li>
+                        <li>Herramientas para terapeutas y educadores</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Métricas Gartner -->
+    <section class="content-section" id="metricas">
+        <div class="section-title">
+            <h2>Análisis de Mercado y Métricas Gartner</h2>
+            <p>Evaluamos nuestra posición en el mercado utilizando métricas de referencia y análisis comparativos de
+                Gartner para soluciones de IA e Ingeniería Automatizada.</p>
+        </div>
+
+        <div class="gartner-container">
+            <div class="gartner-intro">
+                <div class="intro-card">
+                    <h3><i class="fas fa-chart-line"></i> Cuadrante Mágico de Gartner</h3>
+                    <p>El Cuadrante Mágico de Gartner es una herramienta que proporciona un posicionamiento competitivo
+                        gráfico de proveedores de tecnología para ayudar a tomar decisiones de inversión inteligentes.
+                    </p>
+
+                    <div class="quadrant-types">
+                        <div class="quadrant-type">
+                            <div class="type-icon leaders">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="type-info">
+                                <h4>Líderes</h4>
+                                <p>Ejecutan bien su visión actual y están bien posicionados para el mañana.</p>
+                            </div>
+                        </div>
+
+                        <div class="quadrant-type">
+                            <div class="type-icon visionaries">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="type-info">
+                                <h4>Visionarios</h4>
+                                <p>Entienden hacia dónde va el mercado pero aún no ejecutan bien.</p>
+                            </div>
+                        </div>
+
+                        <div class="quadrant-type">
+                            <div class="type-icon challengers">
+                                <i class="fas fa-fist-raised"></i>
+                            </div>
+                            <div class="type-info">
+                                <h4>Retadores</h4>
+                                <p>Ejecutan bien hoy o pueden dominar un segmento grande.</p>
+                            </div>
+                        </div>
+
+                        <div class="quadrant-type">
+                            <div class="type-icon niche">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="type-info">
+                                <h4>Jugadores de Nicho</h4>
+                                <p>Se enfocan con éxito en un segmento pequeño.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gartner-quadrant-section">
+                <h3><i class="fas fa-crosshairs"></i> Posicionamiento de GProA en Soluciones de IA Industrial</h3>
+                <div class="quadrant-wrapper">
+                    <canvas id="gartnerQuadrant" width="500" height="500"></canvas>
+                    <div class="quadrant-legend">
+                        <div class="legend-item gproa">
+                            <div class="legend-dot"></div>
+                            <span>GProA Technology</span>
+                        </div>
+                        <div class="legend-item competitors">
+                            <div class="legend-dot"></div>
+                            <span>Competidores</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3><i class="fas fa-trending-up"></i> Evolución de Capacidades</h3>
+                        <p>Progreso en los últimos 3 años</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="evolutionChart" width="400" height="300"></canvas>
+                    </div>
+                    <div class="metric-insights">
+                        <div class="insight">
+                            <span class="insight-label">Crecimiento IA:</span>
+                            <span class="insight-value">+340%</span>
+                        </div>
+                        <div class="insight">
+                            <span class="insight-label">Automatización:</span>
+                            <span class="insight-value">+280%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3><i class="fas fa-balance-scale"></i> Comparativa de Soluciones</h3>
+                        <p>Análisis competitivo por categoría</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="solutionsChart" width="400" height="300"></canvas>
+                    </div>
+                    <div class="metric-insights">
+                        <div class="insight">
+                            <span class="insight-label">Innovación:</span>
+                            <span class="insight-value">92/100</span>
+                        </div>
+                        <div class="insight">
+                            <span class="insight-label">Especialización:</span>
+                            <span class="insight-value">88/100</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3><i class="fas fa-rocket"></i> Proyección de Mercado</h3>
+                        <p>Tendencias y oportunidades 2025-2027</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="marketChart" width="400" height="300"></canvas>
+                    </div>
+                    <div class="metric-insights">
+                        <div class="insight">
+                            <span class="insight-label">Mercado IA Industrial:</span>
+                            <span class="insight-value">$47.2B</span>
+                        </div>
+                        <div class="insight">
+                            <span class="insight-label">CAGR 2025-2027:</span>
+                            <span class="insight-value">23.4%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gartner-analysis">
+                <div class="analysis-card">
+                    <h3><i class="fas fa-microscope"></i> Análisis Estratégico</h3>
+                    <div class="analysis-content">
+                        <div class="strength-item">
+                            <div class="strength-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <div class="strength-text">
+                                <h4>Fortalezas Clave</h4>
+                                <ul>
+                                    <li>Especialización en IA para ingeniería eléctrica e industrial</li>
+                                    <li>Soluciones verticales altamente especializadas (GECRAI, GIACELIA)</li>
+                                    <li>Enfoque en sectores de alta regulación y complejidad técnica</li>
+                                    <li>Integración nativa con herramientas CAD/CAE estándar</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="opportunity-item">
+                            <div class="opportunity-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="opportunity-text">
+                                <h4>Oportunidades de Crecimiento</h4>
+                                <ul>
+                                    <li>Expansión a mercados internacionales (LATAM, Europa)</li>
+                                    <li>Desarrollo de APIs para ecosistemas de terceros</li>
+                                    <li>Integración con plataformas IoT y gemelos digitales</li>
+                                    <li>Certificaciones internacionales (ISO, IEC, IEEE)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipo -->
+    <section class="content-section" id="equipo">
+        <div class="section-title">
+            <h2>Equipo de Innovación</h2>
+            <p>Expertos comprometidos con el desarrollo de tecnologías accesibles y funcionales para sectores
+                estratégicos.</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="CEO.png" alt="Abdel Lugo Trejo - CEO" class="member-avatar">
+                <h3>Abdel Lugo Trejo</h3>
+                <span class="position">Desarrollo e Investigación</span>
+                <p>Fundador de GProA Technology, especialista en automatización y sistemas inteligentes. Ha liderado el
+                    desarrollo de soluciones como GECRAI y GIACELIA.</p>
+            </div>
+
+            <div class="team-member">
+                <img src="COO.png" alt="Israel Reséndiz Gálvez - COO" class="member-avatar">
+                <h3>Israel Reséndiz Gálvez</h3>
+                <span class="position">Administración General</span>
+                <p>Responsable de liderar la operación y la estructura administrativa de GProA Technology. Supervisa las
+                    áreas legales, contables y de cumplimiento normativo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section class="content-section" id="contacto">
+        <div class="section-title">
+            <h2>Contacto Estratégico</h2>
+            <p>Estamos listos para colaborar en el desarrollo de soluciones tecnológicas que transformen su industria.
+            </p>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Centro de Operaciones GProA</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        <p>Calle Libramiento Norte No. 30<br>
+                            Colonia Loma de Buenavista<br>
+                            San José Iturbide, Guanajuato, México<br>
+                            C.P. 37980
+                        </p>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Juan Abdel Lugo Trejo</h4>
+                        <span class="position">CEO – Desarrollo Tecnológico</span><br>
+                        <a href="mailto:trejulu66@gmail.com">📧 trejulu66@gmail.com</a><br>
+                        <a href="tel:+5214681208570">📞 +52 1 468 120 8570</a>
+                    </div>
+                    <div class="contact-text">
+                        <h4>Israel Aldair Reséndiz Gálvez</h4>
+                        <span class="position">COO – Administración</span><br>
+                        <a href="mailto:aldazresendiz9@gmail.com">📧 aldazresendiz9@gmail.com</a><br>
+                        <a href="tel:+5214191296200">📞 +52 1 419 129 6200</a>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/gproa-technology/" class="social-link" target="_blank"><i
+                            class="fab fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/5214681208570" class="social-link" target="_blank"><i
+                            class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:gproatechnology@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Asunto</label>
+                        <input type="text" id="subject" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" class="form-control" required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Enviar Mensaje</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="#inicio" class="footer-logo">GProA<span>Technology</span></a>
+                <p>Líderes en implementación de tecnologías emergentes para la automatización industrial inteligente.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <h4>Áreas de Innovación</h4>
+                <ul>
+                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> Automatización Cognitiva</a></li>
+                    <li><a href="#servicios"><i class="fas fa-chevron-right"></i> IA Generativa</a></li>
+                    <li><a href="#proyectos"><i class="fas fa-chevron-right"></i> Proyectos Destacados</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-contact">
+                <h4>Contacto Directo</h4>
+                <div class="contact-method">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <a href="mailto:trejulu66@gmail.com">trejulu66@gmail.com</a>
+                    </div>
+                </div>
+                <script>
+                    // Configuración de gráficas
+                    const glucoseData = {
+                        labels: ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00'],
+                        datasets: [{
+                            label: 'Nivel de Glucosa (mg/dL)',
+                            data: [120, 135, 128, 142, 130, 125, 138],
+                            borderColor: '#00e0ff',
+                            backgroundColor: 'rgba(0, 224, 255, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    };
+
+                    const predictionsData = {
+                        labels: ['15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
+                        datasets: [{
+                            label: 'Predicción de Glucosa',
+                            data: [135, 140, 132, 128, 130, 125],
+                            borderColor: '#0066ff',
+                            backgroundColor: 'rgba(0, 102, 255, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            borderDash: [5, 5]
+                        }]
+                    };
+
+                    const insightsData = {
+                        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                        datasets: [{
+                            label: 'Tiempo en Rango (%)',
+                            data: [75, 82, 78, 85, 80, 88, 83],
+                            borderColor: '#8a2be2',
+                            backgroundColor: 'rgba(138, 43, 226, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    };
+
+                    const chartConfig = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#e0f2fe' }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#94a3b8' },
+                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            },
+                            y: {
+                                ticks: { color: '#94a3b8' },
+                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            }
+                        }
+                    };
+
+                    // Inicializar gráficas
+                    window.addEventListener('DOMContentLoaded', () => {
+                        const ctx1 = document.getElementById('glucoseChart').getContext('2d');
+                        new Chart(ctx1, {
+                            type: 'line',
+                            data: glucoseData,
+                            options: { ...chartConfig, plugins: { ...chartConfig.plugins, title: { display: true, text: 'Monitoreo de Glucosa', color: '#e0f2fe' } } }
+                        });
+
+                        const ctx2 = document.getElementById('predictionsChart').getContext('2d');
+                        new Chart(ctx2, {
+                            type: 'line',
+                            data: predictionsData,
+                            options: { ...chartConfig, plugins: { ...chartConfig.plugins, title: { display: true, text: 'Predicciones', color: '#e0f2fe' } } }
+                        });
+
+                        const ctx3 = document.getElementById('insightsChart').getContext('2d');
+                        new Chart(ctx3, {
+                            type: 'line',
+                            data: insightsData,
+                            options: { ...chartConfig, plugins: { ...chartConfig.plugins, title: { display: true, text: 'Análisis Semanal', color: '#e0f2fe' } } }
+                        });
+                    });
+
+                    // Funcionalidad del chat
+                    const chatMessages = document.getElementById('chatMessages');
+                    const userInput = document.getElementById('userInput');
+                    let messageHistory = [];
+
+                    function addMessage(content, isUser = false) {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+                        messageDiv.textContent = content;
+                        chatMessages.appendChild(messageDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        messageHistory.push({ role: isUser ? 'user' : 'assistant', content });
+                    }
+
+                    function sendMessage() {
+                        const message = userInput.value.trim();
+                        if (!message) return;
+
+                        addMessage(message, true);
+                        userInput.value = '';
+
+                        // Simular respuesta del asistente
+                        setTimeout(() => {
+                            const responses = {
+                                'glucosa': 'Los niveles normales de glucosa en sangre en ayunas deben estar entre 70-100 mg/dL. Después de comer, pueden subir hasta 140 mg/dL.',
+                                'diabetes': 'La diabetes es una enfermedad crónica que afecta cómo tu cuerpo procesa la glucosa. Hay varios tipos: Tipo 1, Tipo 2 y gestacional.',
+                                'síntomas': 'Los síntomas comunes de la diabetes incluyen: sed excesiva, micción frecuente, fatiga, visión borrosa y hambre constante.',
+                                'tratamiento': 'El tratamiento puede incluir medicamentos, insulina, dieta equilibrada y ejercicio regular. Es importante mantener un monitoreo constante.',
+                                'prevención': 'Para prevenir la diabetes tipo 2: mantén un peso saludable, haz ejercicio regularmente, come una dieta balanceada y controla tu presión arterial.'
+                            };
+
+                            let response = 'Entiendo tu pregunta. ¿Podrías ser más específico sobre qué aspecto de la diabetes te interesa conocer?';
+                            for (const [key, value] of Object.entries(responses)) {
+                                if (message.toLowerCase().includes(key)) {
+                                    response = value;
+                                    break;
+                                }
+                            }
+
+                            addMessage(response);
+                        }, 1000);
+                    }
+
+                    userInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') sendMessage();
+                    });
+
+                    // Mensaje inicial
+                    addMessage('¡Hola! Soy el asistente virtual de GlucAI. ¿En qué puedo ayudarte con el manejo de tu diabetes?');
+                </script>
+                <div class="contact-method">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <a href="tel:+5214681208570">468 120 8570</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p>© 2025 GPROA Technology, S. de R.L. de C.V. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Organizados -->
+    <!-- Core -->
+    <script src="js/core/navigation.js"></script>
+
+    <!-- Components -->
+    <script src="js/components/projects.js"></script>
+    <script src="js/components/contact.js"></script>
+    <script src="js/components/modals.js"></script>
+    <script src="js/components/gartner.js"></script>
+
+    <!-- Effects -->
+    <script src="js/effects/particles.js"></script>
+</body>
+
+</html>

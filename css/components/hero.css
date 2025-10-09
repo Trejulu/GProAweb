@@ -1,0 +1,426 @@
+/* Hero Section - Sección principal con logo y efectos */
+
+.quantum-portal {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: var(--z-content);
+    padding: var(--spacing-lg);
+    overflow: hidden;
+}
+
+/* Canvas de fondo */
+#particleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-background);
+}
+
+/* Logo futurista */
+.execution-sphere {
+    position: relative;
+    width: 380px;
+    height: 380px;
+    margin-bottom: var(--spacing-lg);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-center {
+    text-align: center;
+    z-index: 10;
+}
+
+.logo-gproa {
+    font-family: var(--font-logo);
+    font-weight: 800;
+    font-size: 4rem;
+    letter-spacing: -1px;
+    color: transparent;
+    background: var(--tech-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: var(--neon-glow);
+    position: relative;
+    margin-bottom: 15px;
+    line-height: 1;
+}
+
+.logo-technology {
+    font-family: var(--font-logo);
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: 6px;
+    color: var(--light-cyan);
+    text-transform: uppercase;
+    margin-top: 15px;
+    position: relative;
+    text-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
+}
+
+.logo-technology::before,
+.logo-technology::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    box-shadow: 0 0 10px var(--cyan);
+}
+
+.logo-technology::before {
+    left: -60px;
+}
+
+.logo-technology::after {
+    right: -60px;
+}
+
+/* Efecto holográfico */
+.holographic-effect {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 102, 255, 0.2) 0%, transparent 70%);
+    -webkit-filter: blur(30px);
+    filter: blur(30px);
+    z-index: 0;
+    animation: pulse-hologram 6s infinite ease-in-out;
+}
+
+@keyframes pulse-hologram {
+    0% {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+}
+
+/* Nodos de conexión */
+.connection-node {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--cyan);
+    filter: drop-shadow(0 0 10px var(--cyan));
+    z-index: 15;
+    transition: var(--transition-normal);
+}
+
+.node-1 { top: 15%; left: 15%; }
+.node-2 { top: 15%; right: 15%; }
+.node-3 { bottom: 15%; left: 50%; transform: translateX(-50%); }
+.node-4 { bottom: 25%; right: 25%; }
+
+/* Contenedor de eslogan */
+.slogan-container {
+    position: relative;
+    text-align: center;
+    margin: 30px 0;
+    padding: 0 var(--spacing-lg);
+    z-index: 10;
+}
+
+.slogan-text {
+    font-family: var(--font-logo);
+    font-size: 1.8rem;
+    color: var(--cyan);
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px rgba(0, 224, 255, 0.5);
+    letter-spacing: 1px;
+}
+
+.rotating-words {
+    position: relative;
+    height: 100px;
+    overflow: hidden;
+}
+
+.rotating-word {
+    position: absolute;
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: var(--tech-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0;
+    animation: wordRotate 9s infinite linear;
+    text-shadow: var(--neon-glow);
+}
+
+.rotating-word:nth-child(2) { animation-delay: 3s; }
+.rotating-word:nth-child(3) { animation-delay: 6s; }
+
+@keyframes wordRotate {
+    0% { opacity: 0; transform: translateY(30px); }
+    10% { opacity: 1; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(0); }
+    40% { opacity: 0; transform: translateY(-30px); }
+    100% { opacity: 0; }
+}
+
+/* Tarjetas de servicios en hero */
+.services-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 50px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 10;
+}
+
+.service-card {
+    width: 260px;
+    padding: 25px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--border-radius-lg);
+    -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
+    text-align: center;
+    transition: var(--transition-slow);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+    cursor: pointer;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--tech-gradient);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 102, 255, 0.3), 0 0 25px rgba(0, 224, 255, 0.4);
+    border-color: var(--cyan);
+}
+
+.service-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--cyan);
+    text-shadow: 0 0 15px var(--cyan);
+    transition: var(--transition-slow);
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.2);
+    color: var(--light-cyan);
+}
+
+.service-title {
+    font-family: var(--font-logo);
+    font-size: 1.2rem;
+    color: var(--text-white);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 500;
+}
+
+.service-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+/* Badge de versión */
+.version-badge {
+    display: inline-block;
+    padding: 10px 25px;
+    background: rgba(0, 102, 255, 0.2);
+    border: 1px solid var(--electric-blue);
+    border-radius: var(--border-radius-full);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--cyan);
+    letter-spacing: 1.5px;
+    margin-top: 40px;
+    margin-bottom: 60px;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 500;
+    z-index: 10;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition: var(--transition-normal);
+    text-shadow: 0 0 10px rgba(0, 224, 255, 0.3);
+    cursor: pointer;
+}
+
+.version-badge:hover {
+    background: rgba(0, 102, 255, 0.3);
+    border-color: var(--cyan);
+    box-shadow: 0 0 15px rgba(0, 224, 255, 0.3);
+}
+
+/* Botón de scroll */
+.scroll-down {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--cyan);
+    text-decoration: none;
+    z-index: 100;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    padding: 10px;
+}
+
+.scroll-down:hover {
+    color: var(--light-cyan);
+    text-shadow: 0 0 15px var(--cyan);
+}
+
+.scroll-down span {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.scroll-down i {
+    font-size: 1.8rem;
+    animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .execution-sphere {
+        width: 320px;
+        height: 320px;
+    }
+
+    .logo-gproa {
+        font-size: 3rem;
+    }
+
+    .logo-technology {
+        font-size: 1.1rem;
+        letter-spacing: 4px;
+    }
+
+    .logo-technology::before,
+    .logo-technology::after {
+        width: 30px;
+    }
+
+    .logo-technology::before { left: -40px; }
+    .logo-technology::after { right: -40px; }
+
+    .services-container {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    .service-card {
+        width: 280px;
+    }
+
+    .slogan-text {
+        font-size: 1.4rem;
+    }
+
+    .rotating-word {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .execution-sphere {
+        width: 280px;
+        height: 280px;
+    }
+
+    .logo-gproa {
+        font-size: 2.2rem;
+    }
+
+    .logo-technology {
+        font-size: 0.9rem;
+        letter-spacing: 3px;
+    }
+
+    .logo-technology::before,
+    .logo-technology::after {
+        width: 20px;
+    }
+
+    .logo-technology::before { left: -30px; }
+    .logo-technology::after { right: -30px; }
+
+    .slogan-text {
+        font-size: 1.1rem;
+    }
+
+    .rotating-word {
+        font-size: 1.4rem;
+    }
+
+    .service-card {
+        width: 90%;
+        padding: var(--spacing-lg);
+    }
+
+    .service-icon {
+        font-size: 2rem;
+    }
+
+    .service-title {
+        font-size: 1rem;
+    }
+
+    .version-badge {
+        font-size: 0.8rem;
+        padding: 8px var(--spacing-lg);
+    }
+}

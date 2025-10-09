@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Allow access to CSS and JS files
+Allow: /css/
+Allow: /js/
+
+# Allow access to images
+Allow: /CEO.png
+Allow: /COO.png
+Allow: /favicon.ico
+Allow: /favicon.png
+Allow: /logoweb.png
+Allow: /logoweb.ico
+
+# Disallow access to sensitive areas (if any)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Sitemap location
+Sitemap: https://gproatechnology.com/sitemap.xml
