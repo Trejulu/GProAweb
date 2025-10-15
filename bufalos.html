@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Búfalos - Dashboard Director</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .chart-container {
+            height: 300px;
+            width: 100%;
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dark .bg-gray-800 {
+            background-color: #1f2937;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Splashscreen Styles */
+        .splashscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .progress-bar {
+            width: 300px;
+            max-width: 90vw;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .loading-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 300px;
+            max-width: 90vw;
+            margin: 0.5rem 0;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 0.25rem;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: dotPulse 1.4s infinite ease-in-out;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dotPulse {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .counter {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #10b981;
+            margin: 1rem 0;
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
+    <!-- SPLASHSCREEN -->
+    <div id="splashscreen" class="splashscreen">
+        <div class="splash-logo">
+            <i class="fas fa-dumbbell text-4xl text-white"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-white mb-4">Sistema Búfalos</h1>
+        <p class="text-white/70 mb-8">Inicializando sistema...</p>
+
+        <div class="counter" id="loadCounter">0%</div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="loading-items" id="loadingItems">
+            <div class="loading-item">
+                <span><i class="fas fa-database mr-2"></i>Conectando base de datos</span>
+                <div class="loading-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-server mr-2"></i>Cargando servicios</span>
+                <span class="text-green-400" id="serviceStatus">⏳</span>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-credit-card mr-2"></i>Verificando pasarelas</span>
+                <span class="text-green-400" id="paymentStatus">⏳</span>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-door-open mr-2"></i>Sincronizando torniquetes</span>
+                <span id="accessStatus">⏳</span>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-chart-line mr-2"></i>Cargando métricas</span>
+                <span id="metricsStatus">⏳</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN/REGISTRO MODAL -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto relative">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 dark:border-gray-700">
+                <nav class="flex">
+                    <button id="tabLogin"
+                        class="flex-1 py-4 px-6 text-center font-medium border-b-2 border-blue-600 text-blue-600 bg-blue-50">Iniciar
+                        Sesión</button>
+                    <button id="tabRegister"
+                        class="flex-1 py-4 px-6 text-center font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Registrarse</button>
+                </nav>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="loginFormContainer" class="p-6">
+                <div class="text-center mb-6">
+                    <i class="fas fa-dumbbell text-4xl text-blue-600 mb-2"></i>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Bienvenido de vuelta</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Ingresa tu clave de acceso</p>
+                </div>
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label for="clave" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Clave de
+                            Acceso</label>
+                        <div class="relative">
+                            <input type="password" id="clave" required
+                                class="mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <i class="fas fa-lock absolute left-3 top-3.5 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Iniciar Sesión
+                    </button>
+                </form>
+                <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <p class="text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Claves de prueba:</strong><br>
+                        BUFALO-DIRECTOR123 • BUFALO-GERENTE456 • BUFALO-ADMIN789
+                    </p>
+                </div>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div id="registerFormContainer" class="p-6 hidden">
+                <div class="text-center mb-6">
+                    <i class="fas fa-user-plus text-4xl text-green-600 mb-2"></i>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Solicitar Acceso</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Completa tus datos para recibir tu clave</p>
+                </div>
+                <form action="https://formspree.io/f/mdklrzab" method="POST" id="registerForm" class="space-y-4">
+                    <div>
+                        <label for="nombre" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre
+                            Completo *</label>
+                        <input type="text" id="nombre" name="_replyto" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo
+                            Electrónico *</label>
+                        <input type="email" id="email" name="email" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="sucursal"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sucursal</label>
+                        <select id="sucursal" name="sucursal"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                            <option value="">Seleccionar sucursal</option>
+                            <option value="Centro">Centro</option>
+                            <option value="Norte">Norte</option>
+                            <option value="Sur">Sur</option>
+                            <option value="Este">Este</option>
+                            <option value="Oeste">Oeste</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="rol" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rol</label>
+                        <select id="rol" name="rol"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                            <option value="gerente">Gerente de Sucursal</option>
+                            <option value="director">Director General</option>
+                            <option value="admin">Administrador</option>
+                            <option value="vendedor">Vendedor</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="mensaje" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Mensaje
+                            (opcional)</label>
+                        <textarea id="mensaje" name="mensaje" rows="3"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500 resize-none"></textarea>
+                    </div>
+                    <input type="hidden" name="_subject" value="Nueva solicitud de acceso - Sistema Búfalos">
+                    <input type="hidden" name="_next" value="https://tu-dominio.com/gracias.html">
+                    <button type="submit"
+                        class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i> Enviar Solicitud
+                    </button>
+                </form>
+                <div class="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <p class="text-sm text-green-800 dark:text-green-200">
+                        <i class="fas fa-envelope mr-2"></i>Los datos se enviarán a
+                        <strong>admin@gproatechnology.com</strong>
+                    </p>
+                </div>
+            </div>
+
+            <button onclick="closeAuthModal(); window.location.href='index.html';"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD CONTENT -->
+    <div id="dashboardContent" class="hidden">
+        <!-- Header -->
+        <header class="bg-white dark:bg-gray-800 shadow-lg sticky top-0 z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dumbbell text-white text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Sistema Búfalos</h1>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="logout()"
+                        class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm transition-colors">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
+                    </button>
+
+                    <div class="relative hidden md:block">
+                        <input type="text" placeholder="Buscar..."
+                            class="pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg w-64">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+
+                    <button
+                        class="relative p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+
+                    <div id="userProfile" class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                            alt="Profile" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p id="userName" class="font-medium"></p>
+                            <p id="userEmail" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="border-t border-gray-200 dark:border-gray-700">
+                <div class="flex space-x-8 px-6 py-3 overflow-x-auto">
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-blue-600 border-b-2 border-blue-600">
+                        <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-users"></i><span>Clientes</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-credit-card"></i><span>Pagos</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-chart-line"></i><span>Reportes</span>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside
+                class="sidebar w-64 bg-white dark:bg-gray-800 shadow-lg fixed h-full overflow-y-auto z-30 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
+                id="sidebar">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold mb-6">Navegación</h3>
+                    <nav class="space-y-2">
+                        <a href="#"
+                            class="flex items-center space-x-3 p-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 rounded-lg">
+                            <i class="fas fa-tachometer-alt w-5"></i><span>Dashboard</span>
+                        </a>
+                        <a href="#"
+                            class="flex items-center space-x-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-users w-5"></i><span>CRM - Clientes</span>
+                        </a>
+                        <a href="#"
+                            class="flex items-center space-x-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-credit-card w-5"></i><span>Pagos & Domiciliación</span>
+                        </a>
+                        <a href="#"
+                            class="flex items-center space-x-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-box w-5"></i><span>ERP - Inventarios</span>
+                        </a>
+                        <a href="#"
+                            class="flex items-center space-x-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-chart-bar w-5"></i><span>Reportes & KPIs</span>
+                        </a>
+                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <a href="#"
+                                class="flex items-center space-x-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-cog w-5"></i><span>Configuración</span>
+                            </a>
+                            <a href="#"
+                                class="flex items-center space-x-3 p-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-plug w-5"></i><span>Integraciones</span>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 lg:ml-64 p-6">
+                <button onclick="toggleSidebar()" class="lg:hidden mb-4 p-2 bg-blue-600 text-white rounded-lg">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="fade-in">
+                    <h2 class="text-3xl font-bold mb-6">Dashboard Director</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">Visión consolidada de todas las sucursales •
+                        Actualizado en tiempo real</p>
+
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Sucursales Activas
+                                    </p>
+                                    <p class="text-3xl font-bold text-blue-600">12</p>
+                                </div>
+                                <i class="fas fa-building text-3xl text-blue-100"></i>
+                            </div>
+                            <div class="mt-2">
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                                <p class="text-xs text-green-600 mt-1">100% operativas</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Ingresos Mes</p>
+                                    <p class="text-3xl font-bold text-green-600">$1,245,890</p>
+                                </div>
+                                <i class="fas fa-dollar-sign text-3xl text-green-100"></i>
+                            </div>
+                            <div class="mt-2 flex items-center justify-between text-sm">
+                                <span class="text-green-600">+12.5%</span>
+                                <span class="text-gray-500">vs meta</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Socios Activos</p>
+                                    <p class="text-3xl font-bold text-purple-600">2,847</p>
+                                </div>
+                                <i class="fas fa-users text-3xl text-purple-100"></i>
+                            </div>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">+45 nuevos este mes</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Flujo Caja Hoy</p>
+                                    <p class="text-3xl font-bold text-orange-600">$45,230</p>
+                                </div>
+                                <i class="fas fa-chart-line text-3xl text-orange-100"></i>
+                            </div>
+                            <div class="mt-2 flex items-center justify-between text-sm">
+                                <span class="text-orange-600">+8.2%</span>
+                                <span class="text-gray-500">vs ayer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Ingresos Mensuales</h3>
+                                <select class="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded">
+                                    <option>6 meses</option>
+                                    <option>12 meses</option>
+                                </select>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="incomeChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                            <h3 class="text-lg font-semibold mb-4">Estado Membresías</h3>
+                            <div class="chart-container">
+                                <canvas id="membershipChart"></canvas>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mt-4 text-sm">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                    <span>Activas: 2,847 (94%)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                                    <span>Pendientes: 123 (4%)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                                    <span>Canceladas: 56 (2%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance & Table -->
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold">Top 5 Sucursales</h3>
+                                <button class="text-blue-600 hover:text-blue-800 text-sm">Ver todas →</button>
+                            </div>
+                            <div class="space-y-3">
+                                <div
+                                    class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-medium">Sucursal Centro</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">$245,890</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium text-green-600">1°</p>
+                                        <div class="w-16 bg-green-200 dark:bg-green-800 rounded-full h-2 mt-1">
+                                            <div class="bg-green-600 h-2 rounded-full" style="width: 90%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div>
+                                        <p class="font-medium">Sucursal Norte</p>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400">$198,450</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-medium text-blue-600">2°</p>
+                                        <div class="w-16 bg-blue-200 dark:bg-blue-800 rounded-full h-2 mt-1">
+                                            <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 overflow-x-auto">
+                            <h3 class="text-lg font-semibold mb-4">Resumen por Sucursal</h3>
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                                        <th class="text-left py-3">Sucursal</th>
+                                        <th class="text-right py-3">Ingresos</th>
+                                        <th class="text-right py-3">Socios</th>
+                                        <th class="text-right py-3">% Meta</th>
+                                        <th class="text-right py-3">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <td class="py-3">Centro</td>
+                                        <td class="text-right text-green-600">$245,890</td>
+                                        <td class="text-right">847</td>
+                                        <td class="text-right">112%</td>
+                                        <td><span
+                                                class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">Excelente</span>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <td class="py-3">Norte</td>
+                                        <td class="text-right text-blue-600">$198,450</td>
+                                        <td class="text-right">623</td>
+                                        <td class="text-right">98%</td>
+                                        <td><span
+                                                class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Bueno</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // === SPLASHSCREEN ===
+        let currentProgress = 0;
+        function initSplashscreen() {
+            const steps = [
+                { progress: 10, delay: 500 },
+                { progress: 25, delay: 800 },
+                { progress: 40, delay: 1000 },
+                { progress: 60, delay: 1200 },
+                { progress: 80, delay: 800 },
+                { progress: 95, delay: 600 },
+                { progress: 100, delay: 300 }
+            ];
+
+            let stepIndex = 0;
+            const interval = setInterval(() => {
+                if (stepIndex < steps.length) {
+                    const step = steps[stepIndex];
+                    currentProgress = Math.min(currentProgress + (step.progress - currentProgress) * 0.3, step.progress);
+                    updateProgress(currentProgress);
+                    stepIndex++;
+                } else {
+                    currentProgress = 100;
+                    updateProgress(100);
+                    setTimeout(() => {
+                        hideSplashscreen();
+                        checkAuth();
+                    }, 1000);
+                    clearInterval(interval);
+                }
+            }, 800);
+
+            setTimeout(() => document.getElementById('serviceStatus').textContent = '✓', 1500);
+            setTimeout(() => document.getElementById('paymentStatus').textContent = '✓', 2000);
+            setTimeout(() => document.getElementById('accessStatus').textContent = '✓', 3000);
+            setTimeout(() => document.getElementById('metricsStatus').textContent = '✓', 3500);
+        }
+
+        function updateProgress(progress) {
+            document.getElementById('loadCounter').textContent = Math.round(progress) + '%';
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function hideSplashscreen() {
+            const splash = document.getElementById('splashscreen');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 500);
+        }
+
+        // === AUTHENTICATION ===
+        const CLAVES_VALIDAS = {
+            'BUFALO-DIRECTOR123': { nombre: 'Director General', email: 'director@sistemabufalos.com', rol: 'director' },
+            'BUFALO-GERENTE456': { nombre: 'Gerente Centro', email: 'gerente@sistemabufalos.com', rol: 'gerente' },
+            'BUFALO-ADMIN789': { nombre: 'Administrador', email: 'admin@sistemabufalos.com', rol: 'admin' }
+        };
+
+        function checkAuth() {
+            const session = localStorage.getItem('bufalos_session');
+            if (session) {
+                const data = JSON.parse(session);
+                showDashboard(data);
+            } else {
+                showAuthModal();
+            }
+        }
+
+        function showAuthModal() {
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function showDashboard(userData) {
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+            document.getElementById('userName').textContent = userData.nombre;
+            document.getElementById('userEmail').textContent = userData.email;
+            initCharts();
+        }
+
+        function logout() {
+            localStorage.removeItem('bufalos_session');
+            location.reload();
+        }
+
+        // Event Listeners
+        document.getElementById('loginForm').onsubmit = function (e) {
+            e.preventDefault();
+            const clave = document.getElementById('clave').value;
+
+            if (CLAVES_VALIDAS[clave]) {
+                const userData = CLAVES_VALIDAS[clave];
+                localStorage.setItem('bufalos_session', JSON.stringify({
+                    clave: clave,
+                    ...userData,
+                    loginTime: new Date().toISOString()
+                }));
+                showDashboard(userData);
+            } else {
+                alert('Clave incorrecta. Verifica con el administrador.');
+                document.getElementById('clave').value = '';
+                document.getElementById('clave').focus();
+            }
+        };
+
+        document.getElementById('tabLogin').onclick = function () {
+            document.getElementById('loginFormContainer').classList.remove('hidden');
+            document.getElementById('registerFormContainer').classList.add('hidden');
+            this.classList.add('bg-blue-50', 'border-blue-600', 'text-blue-600');
+            document.getElementById('tabRegister').classList.remove('bg-blue-50', 'border-blue-600', 'text-blue-600');
+        };
+
+        document.getElementById('tabRegister').onclick = function () {
+            document.getElementById('registerFormContainer').classList.remove('hidden');
+            document.getElementById('loginFormContainer').classList.add('hidden');
+            this.classList.add('bg-blue-50', 'border-blue-600', 'text-blue-600');
+            document.getElementById('tabLogin').classList.remove('bg-blue-50', 'border-blue-600', 'text-blue-600');
+        };
+
+        function initCharts() {
+            // Income Chart
+            const incomeCtx = document.getElementById('incomeChart')?.getContext('2d');
+            if (incomeCtx) {
+                new Chart(incomeCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Ingresos',
+                            data: [120000, 190000, 300000, 500000, 600000, 800000],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } }
+                    }
+                });
+            }
+
+            // Membership Chart
+            const membershipCtx = document.getElementById('membershipChart')?.getContext('2d');
+            if (membershipCtx) {
+                new Chart(membershipCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Activas', 'Pendientes', 'Canceladas'],
+                        datasets: [{
+                            data: [2847, 123, 56],
+                            backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+        }
+
+        // Dark Theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initSplashscreen);
+    </script>
+</body>
+
+</html>
