@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAIyDD - Plataforma Educativa Inclusiva | GProA Technology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            overflow: hidden;
+        }
+
+        .glass-pane {
+            background-color: rgba(13, 17, 23, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(48, 54, 61, 0.5);
+            z-index: 10;
+        }
+
+        .main-grid {
+            grid-template-columns: 350px 1fr;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #161b22;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #58a6ff;
+        }
+
+        .module-card {
+            transition: transform 0.3s;
+        }
+
+        .module-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Splashscreen Styles */
+        .splashscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .splash-logo {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .progress-bar {
+            width: 300px;
+            max-width: 90vw;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .loading-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 300px;
+            max-width: 90vw;
+            margin: 0.5rem 0;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .loading-dots {
+            display: inline-flex;
+            gap: 0.25rem;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: dotPulse 1.4s infinite ease-in-out;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dotPulse {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .counter {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #10b981;
+            margin: 1rem 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .tab-active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+        }
+
+        .chart-container {
+            height: 300px;
+            width: 100%;
+        }
+
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dark .bg-gray-800 {
+            background-color: #1f2937;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sub-section {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(48, 54, 61, 0.5);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(48, 54, 61, 0.8);
+        }
+
+        nav {
+            background-color: rgba(13, 17, 23, 0.9);
+            padding: 1rem;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .module-detail {
+            background-color: #161b22;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .activity-img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quiz-container {
+            background-color: #1f2937;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body class="h-screen">
+    <!-- SPLASHSCREEN -->
+    <div id="splashscreen" class="splashscreen">
+        <div class="splash-logo">
+            <i class="fas fa-brain text-4xl text-white"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-white mb-4">SAIyDD</h1>
+        <p class="text-white/70 mb-8">Sistema de Apoyo Integral y Desarrollo Diferencial</p>
+
+        <div class="counter" id="loadCounter">0%</div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="loading-items" id="loadingItems">
+            <div class="loading-item">
+                <span><i class="fas fa-brain mr-2"></i>Cargando módulos de aprendizaje</span>
+                <div class="loading-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-users mr-2"></i>Configurando perfiles inclusivos</span>
+                <span class="text-green-400" id="serviceStatus">⏳</span>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-chart-line mr-2"></i>Cargando métricas educativas</span>
+                <span id="paymentStatus">⏳</span>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-gamepad mr-2"></i>Preparando actividades interactivas</span>
+                <span id="accessStatus">⏳</span>
+            </div>
+            <div class="loading-item">
+                <span><i class="fas fa-robot mr-2"></i>Inicializando IA adaptativa</span>
+                <span id="metricsStatus">⏳</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIN/REGISTRO MODAL -->
+    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 hidden">
+        <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto relative">
+            <!-- Tabs -->
+            <div class="border-b border-gray-200 dark:border-gray-700">
+                <nav class="flex">
+                    <button id="tabLogin"
+                        class="flex-1 py-4 px-6 text-center font-medium border-b-2 border-blue-600 text-blue-600 bg-blue-50">Iniciar
+                        Sesión</button>
+                    <button id="tabRegister"
+                        class="flex-1 py-4 px-6 text-center font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">Registrarse</button>
+                </nav>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="loginFormContainer" class="p-6">
+                <div class="text-center mb-6">
+                    <i class="fas fa-brain text-4xl text-blue-600 mb-2"></i>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Bienvenido a SAIyDD</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Ingresa tu clave de acceso</p>
+                </div>
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label for="clave" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Clave de
+                            Acceso</label>
+                        <div class="relative">
+                            <input type="password" id="clave" required
+                                class="mt-1 block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <i class="fas fa-lock absolute left-3 top-3.5 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Acceder a SAIyDD
+                    </button>
+                </form>
+                <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <p class="text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Claves de prueba:</strong><br>
+                        SAIYDD-TEACHER123 • SAIYDD-ADMIN456
+                    </p>
+                </div>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <div id="registerFormContainer" class="p-6 hidden">
+                <div class="text-center mb-6">
+                    <i class="fas fa-user-plus text-4xl text-green-600 mb-2"></i>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Solicitar Acceso</h2>
+                    <p class="text-gray-600 dark:text-gray-400">Completa tus datos para recibir tu clave</p>
+                </div>
+                <form action="https://formspree.io/f/mdklrzab" method="POST" id="registerForm" class="space-y-4">
+                    <div>
+                        <label for="nombre" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre
+                            Completo *</label>
+                        <input type="text" id="nombre" name="_replyto" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Correo
+                            Electrónico *</label>
+                        <input type="email" id="email" name="email" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="institucion"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Institución/Escuela</label>
+                        <select id="institucion" name="institucion"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                            <option value="">Seleccionar institución</option>
+                            <option value="publica">Escuela Pública</option>
+                            <option value="privada">Escuela Privada</option>
+                            <option value="especial">Centro de Educación Especial</option>
+                            <option value="terapeuta">Terapeuta Independiente</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="rol" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Rol</label>
+                        <select id="rol" name="rol"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500">
+                            <option value="docente">Docente</option>
+                            <option value="terapeuta">Terapeuta</option>
+                            <option value="director">Director</option>
+                            <option value="admin">Administrador</option>
+                            <option value="padre">Padre/Madre</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="mensaje" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Mensaje
+                            (opcional)</label>
+                        <textarea id="mensaje" name="mensaje" rows="3"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500 resize-none"></textarea>
+                    </div>
+                    <input type="hidden" name="_subject" value="Nueva solicitud de acceso - SAIyDD">
+                    <input type="hidden" name="_next" value="https://tu-dominio.com/gracias.html">
+                    <button type="submit"
+                        class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i> Enviar Solicitud
+                    </button>
+                </form>
+                <div class="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                    <p class="text-sm text-green-800 dark:text-green-200">
+                        <i class="fas fa-envelope mr-2"></i>Los datos se enviarán a
+                        <strong>admin@gproatechnology.com</strong>
+                    </p>
+                </div>
+            </div>
+
+            <button onclick="closeAuthModal(); window.location.href='index.html';"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD CONTENT -->
+    <div id="dashboardContent" class="hidden">
+        <!-- Header -->
+        <header class="bg-gray-800 shadow-lg sticky top-0 z-40">
+            <div class="flex items-center justify-between px-6 py-4">
+                <div class="flex items-center space-x-3">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-white">SAIyDD</h1>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="logout()"
+                        class="px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 text-sm transition-colors">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
+                    </button>
+
+                    <div class="relative hidden md:block">
+                        <input type="text" id="searchInput" placeholder="Buscar estudiantes o actividades..."
+                            class="pl-10 pr-4 py-2 bg-gray-700 rounded-lg w-64 text-white">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+
+                    <button class="relative p-2 text-gray-300 hover:bg-gray-700 rounded-lg">
+                        <i class="fas fa-bell text-xl"></i>
+                        <span
+                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">2</span>
+                    </button>
+
+                    <div id="userProfile" class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+                            alt="Profile" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p id="userName" class="font-medium text-white">Prof. María González</p>
+                            <p id="userEmail" class="text-sm text-gray-400">Especialista en Educación Inclusiva</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="border-t border-gray-700">
+                <div class="flex space-x-8 px-6 py-3 overflow-x-auto">
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-blue-400 border-b-2 border-blue-400"
+                        onclick="showDashboardSection('dashboard')">
+                        <i class="fas fa-tachometer-alt"></i><span>Dashboard</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-gray-400 hover:text-blue-400"
+                        onclick="showDashboardSection('students')">
+                        <i class="fas fa-users"></i><span>Estudiantes</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-gray-400 hover:text-blue-400"
+                        onclick="showDashboardSection('modules')">
+                        <i class="fas fa-brain"></i><span>Módulos</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 px-3 py-2 text-gray-400 hover:text-blue-400"
+                        onclick="showDashboardSection('reports')">
+                        <i class="fas fa-chart-line"></i><span>Reportes</span>
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <div class="flex">
+            <!-- Sidebar -->
+            <aside
+                class="sidebar w-64 bg-gray-800 shadow-lg fixed h-full overflow-y-auto z-30 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out"
+                id="sidebar">
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold mb-6 text-white">Navegación</h3>
+                    <nav class="space-y-2">
+                        <a href="#" class="flex items-center space-x-3 p-3 bg-blue-900/20 text-blue-400 rounded-lg"
+                            onclick="showDashboardSection('dashboard')">
+                            <i class="fas fa-tachometer-alt w-5"></i><span>Dashboard</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-700 rounded-lg"
+                            onclick="showDashboardSection('students')">
+                            <i class="fas fa-users w-5"></i><span>Gestión de Estudiantes</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-700 rounded-lg"
+                            onclick="showDashboardSection('modules')">
+                            <i class="fas fa-brain w-5"></i><span>Módulos de Aprendizaje</span>
+                        </a>
+                        <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-700 rounded-lg"
+                            onclick="showDashboardSection('reports')">
+                            <i class="fas fa-chart-bar w-5"></i><span>Análisis y Reportes</span>
+                        </a>
+                        <div class="mt-4 pt-4 border-t border-gray-700">
+                            <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-cog w-5"></i><span>Configuración</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 p-3 hover:bg-gray-700 rounded-lg">
+                                <i class="fas fa-plug w-5"></i><span>Integraciones</span>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 lg:ml-64 p-6 overflow-y-auto" style="height: calc(100vh - 120px);">
+                <button onclick="toggleSidebar()" class="lg:hidden mb-4 p-2 bg-blue-600 text-white rounded-lg">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Dashboard Section -->
+                <div id="dashboardSection" class="fade-in">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Dashboard Educativo</h2>
+                    <p class="text-gray-400 mb-8">Visión general del progreso de estudiantes y módulos activos</p>
+
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-400">Estudiantes Activos</p>
+                                    <p class="text-3xl font-bold text-blue-400">47</p>
+                                </div>
+                                <i class="fas fa-users text-3xl text-blue-100"></i>
+                            </div>
+                            <div class="mt-2">
+                                <div class="w-full bg-gray-700 rounded-full h-2">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <p class="text-xs text-green-400 mt-1">+12% vs mes anterior</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-400">Actividades Completadas</p>
+                                    <p class="text-3xl font-bold text-green-400">1,247</p>
+                                </div>
+                                <i class="fas fa-check-circle text-3xl text-green-100"></i>
+                            </div>
+                            <div class="mt-2 flex items-center justify-between text-sm">
+                                <span class="text-green-400">+23%</span>
+                                <span class="text-gray-500">esta semana</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-400">Módulos Activos</p>
+                                    <p class="text-3xl font-bold text-purple-400">8</p>
+                                </div>
+                                <i class="fas fa-brain text-3xl text-purple-100"></i>
+                            </div>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-400">4 de Mundo de Letras, 4 de Aventura Numérica</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-400">Tasa de Éxito</p>
+                                    <p class="text-3xl font-bold text-orange-400">87%</p>
+                                </div>
+                                <i class="fas fa-trophy text-3xl text-orange-100"></i>
+                            </div>
+                            <div class="mt-2 flex items-center justify-between text-sm">
+                                <span class="text-orange-400">+5%</span>
+                                <span class="text-gray-500">promedio general</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-white">Progreso por Módulo</h3>
+                                <select class="bg-gray-700 px-3 py-1 rounded text-white">
+                                    <option>Esta semana</option>
+                                    <option>Este mes</option>
+                                </select>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="moduleChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                            <h3 class="text-lg font-semibold mb-4 text-white">Distribución por Nivel</h3>
+                            <div class="chart-container">
+                                <canvas id="levelChart"></canvas>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mt-4 text-sm">
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                                    <span>Nivel Básico: 32%</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                                    <span>Nivel Intermedio: 45%</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
+                                    <span>Nivel Avanzado: 23%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module Cards -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-blue-400">Mundo de Letras</h3>
+                                <button id="exploreLetrasBtn" class="text-blue-400 hover:text-blue-300 text-sm">Explorar
+                                    →</button>
+                            </div>
+                            <p class="text-gray-400 mb-4">Desarrollo de habilidades comunicativas y lingüísticas con
+                                enfoque inclusivo</p>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center p-2 bg-gray-700 rounded">
+                                    <span class="text-white">Expresión Oral</span>
+                                    <span class="text-green-400">78% completado</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-700 rounded">
+                                    <span class="text-white">CAA/SAAC</span>
+                                    <span class="text-blue-400">65% completado</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-700 rounded">
+                                    <span class="text-white">Alfabetización</span>
+                                    <span class="text-purple-400">82% completado</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-semibold text-pink-400">Aventura Numérica</h3>
+                                <button id="exploreNumericaBtn"
+                                    class="text-pink-400 hover:text-pink-300 text-sm">Explorar
+                                    →</button>
+                            </div>
+                            <p class="text-gray-400 mb-4">Desarrollo de habilidades matemáticas y pensamiento lógico</p>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center p-2 bg-gray-700 rounded">
+                                    <span class="text-white">Conteo y Números</span>
+                                    <span class="text-green-400">91% completado</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-700 rounded">
+                                    <span class="text-white">Operaciones Básicas</span>
+                                    <span class="text-blue-400">74% completado</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-gray-700 rounded">
+                                    <span class="text-white">Geometría</span>
+                                    <span class="text-purple-400">68% completado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students Section (Placeholder) -->
+                <div id="studentsSection" class="fade-in hidden">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Gestión de Estudiantes</h2>
+                    <p class="text-gray-400 mb-8">Administra perfiles de estudiantes y seguimiento personalizado</p>
+                    <!-- Añadir tabla o lista de estudiantes aquí -->
+                    <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-white">Lista de Estudiantes</h3>
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="border-b border-gray-700">
+                                    <th class="py-2">Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Progreso</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-700">
+                                    <td class="py-2">Juan Pérez</td>
+                                    <td>8</td>
+                                    <td>75%</td>
+                                    <td><button class="text-blue-400">Ver Perfil</button></td>
+                                </tr>
+                                <!-- Más filas -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modules Section -->
+                <div id="modulesSection" class="fade-in hidden">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Módulos de Aprendizaje</h2>
+                    <p class="text-gray-400 mb-8">Explora y configura módulos educativos</p>
+
+                    <div id="overview" class="mb-8">
+                        <h3 class="text-2xl font-semibold mb-4 text-white">Categorías de Aprendizaje</h3>
+                        <p class="text-gray-400 mb-4">Estructura de contenidos en módulos temáticos.</p>
+
+                        <div class="overflow-x-auto mb-6">
+                            <table class="min-w-full bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+                                <thead>
+                                    <tr class="bg-blue-900/50 text-left">
+                                        <th class="px-4 py-2" colspan="4">Mundo de letras</th>
+                                        <th class="px-4 py-2" colspan="4">Aventura numérica</th>
+                                    </tr>
+                                    <tr class="bg-gray-700">
+                                        <th class="px-4 py-2">Expresión oral</th>
+                                        <th class="px-4 py-2">Comunicación aumentativa y alternativa (CAA)</th>
+                                        <th class="px-4 py-2">Alfabetización</th>
+                                        <th class="px-4 py-2">Vocabulario y semántica</th>
+                                        <th class="px-4 py-2">Conteo y números</th>
+                                        <th class="px-4 py-2">Clasificación y patrones</th>
+                                        <th class="px-4 py-2">Operaciones básicas</th>
+                                        <th class="px-4 py-2">Geometría y medida</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border border-gray-700 px-4 py-2">Sujeto</td>
+                                        <td class="border border-gray-700 px-4 py-2">Pictogramas Sujetos</td>
+                                        <td class="border border-gray-700 px-4 py-2">Vocales</td>
+                                        <td class="border border-gray-700 px-4 py-2">Sinónimos y antónimos</td>
+                                        <td class="border border-gray-700 px-4 py-2">Clasifica los números y letras</td>
+                                        <td class="border border-gray-700 px-4 py-2">Del 1 al 10 (base 10)</td>
+                                        <td class="border border-gray-700 px-4 py-2">Suma</td>
+                                        <td class="border border-gray-700 px-4 py-2">Figuras y cuerpos geométricos</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-700 px-4 py-2">Verbos</td>
+                                        <td class="border border-gray-700 px-4 py-2">Pictogramas Verbos</td>
+                                        <td class="border border-gray-700 px-4 py-2">Abecedario</td>
+                                        <td class="border border-gray-700 px-4 py-2">Tiempos gramaticales</td>
+                                        <td class="border border-gray-700 px-4 py-2">Empareja y relaciona números</td>
+                                        <td class="border border-gray-700 px-4 py-2">Familias de números</td>
+                                        <td class="border border-gray-700 px-4 py-2">Resta</td>
+                                        <td class="border border-gray-700 px-4 py-2">Áreas y perímetros</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-700 px-4 py-2">Predicados</td>
+                                        <td class="border border-gray-700 px-4 py-2">Pictogramas Predicados</td>
+                                        <td class="border border-gray-700 px-4 py-2">Sílabas</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2">Conoce los números</td>
+                                        <td class="border border-gray-700 px-4 py-2">Valor posicional</td>
+                                        <td class="border border-gray-700 px-4 py-2">Multiplicación</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-700 px-4 py-2">Construye tu oración</td>
+                                        <td class="border border-gray-700 px-4 py-2">Construye tu oración</td>
+                                        <td class="border border-gray-700 px-4 py-2">Conciencia fonológica</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2">Conteo a base 10</td>
+                                        <td class="border border-gray-700 px-4 py-2">Fracciones y decimales</td>
+                                        <td class="border border-gray-700 px-4 py-2">División</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-700 px-4 py-2">Narración y descripción</td>
+                                        <td class="border border-gray-700 px-4 py-2">Tablero de comunicación</td>
+                                        <td class="border border-gray-700 px-4 py-2">Relación grafo fonética</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2">Conteo a base 30</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-700 px-4 py-2">Comprensión auditiva</td>
+                                        <td class="border border-gray-700 px-4 py-2">Construcción de enunciados</td>
+                                        <td class="border border-gray-700 px-4 py-2">Lecturas por nivel</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2">Conteo a base 50</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border border-gray-700 px-4 py-2">Juegos de dicción</td>
+                                        <td class="border border-gray-700 px-4 py-2">Producción de textos</td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                        <td class="border border-gray-700 px-4 py-2"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="text-2xl font-semibold mb-4 text-white">Explicación de Módulos</h3>
+                        <p class="text-gray-400 mb-4">La intención de la organización anterior es agrupar los contenidos
+                            en grandes categorías temáticas que actúen como módulos o carpetas principales, y dentro de
+                            cada módulo, incluir actividades específicas que cubran los contenidos detallados.</p>
+                        <p class="text-gray-400 mb-4">El módulo 1: Comunicación y Lenguaje se ha nombrado como “Mundo de
+                            Letras” para volverlo más atractivo. Este módulo se enfoca en el desarrollo de habilidades
+                            verbales (habla y escucha) y escritas (lectura y escritura) de una manera inclusiva, ya que
+                            se incorporaron también los SAAC para pacientes con TEA (autismo), trastornos de la
+                            comunicación, entre otros. Aquí podría integrarse también un módulo para LSM (lengua de
+                            señas) o incluso para lectoescritura Braille.</p>
+                        <p class="text-gray-400 mb-4">El módulo 2: Cálculo y matemáticas se ha nombrado como “Aventura
+                            Numérica” e incluye el pensamiento lógico, las operaciones numéricas y la introducción a
+                            conceptos espaciales y de medida.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="module-card bg-gray-800 rounded-xl shadow-lg p-6">
+                            <h3 class="text-lg font-semibold text-blue-400 mb-2">Módulo 1: Mundo de Letras</h3>
+                            <p class="text-gray-400 mb-4">Enfocado en comunicación y lenguaje. Desarrolla habilidades
+                                verbales y escritas de forma inclusiva.</p>
+                            <button id="exploreLetrasBtn"
+                                class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Explorar
+                                Módulo</button>
+                        </div>
+                        <div class="module-card bg-gray-800 rounded-xl shadow-lg p-6">
+                            <h3 class="text-lg font-semibold text-pink-400 mb-2">Módulo 2: Aventura Numérica</h3>
+                            <p class="text-gray-400 mb-4">Enfocado en cálculo y matemáticas. Incluye pensamiento lógico
+                                y operaciones numéricas.</p>
+                            <button id="exploreNumericaBtn"
+                                class="w-full bg-pink-600 text-white py-2 rounded hover:bg-pink-700">Explorar
+                                Módulo</button>
+                        </div>
+                    </div>
+
+                    <!-- Detalle Letras -->
+                    <div id="detalleLetras" class="module-detail hidden">
+                        <div class="flex items-center mb-6">
+                            <button id="backLetrasBtn" class="text-blue-400 hover:text-blue-300 mr-4"><i
+                                    class="fas fa-arrow-left mr-2"></i>Volver</button>
+                            <h2 class="text-2xl font-bold text-blue-400">Módulo: Mundo de Letras</h2>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Expresión oral</h3>
+                            <ul class="space-y-4">
+                                <li class="flex flex-col">
+                                    Sujeto - Actividad: Identificar sujetos en oraciones.
+                                    <img src="https://api.eneso.es/verbo/img/boards/cuaderno_lectoescritura_02.jpg"
+                                        alt="Pictogramas para sujetos" class="activity-img">
+                                </li>
+                                <li class="flex flex-col">
+                                    Verbos - Actividad: Practicar verbos con pictogramas.
+                                    <img src="https://i.pinimg.com/736x/86/47/e0/8647e02aa36ea52acd46501a70440d86.jpg"
+                                        alt="Pictogramas para verbos" class="activity-img">
+                                </li>
+                                <li>Predicados - Actividad: Construir predicados simples.</li>
+                                <li>Construye tu oración - Actividad: Armar oraciones completas.</li>
+                                <li>Narración y descripción - Actividad: Describir escenas.</li>
+                                <li>Comprensión auditiva - Actividad: Escuchar y responder.</li>
+                                <li>Juegos de dicción - Actividad: Mejorar pronunciación.</li>
+                            </ul>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Comunicación aumentativa y alternativa
+                                (CAA)</h3>
+                            <ul class="space-y-4">
+                                <li class="flex flex-col">
+                                    Pictogramas Sujetos - Actividad: Usar pictos para sujetos.
+                                    <img src="https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=3109267902498459"
+                                        alt="Pictogramas para predicados" class="activity-img">
+                                </li>
+                                <li>Pictogramas Verbos - Actividad: Pictos para acciones.</li>
+                                <li>Pictogramas Predicados - Actividad: Pictos para complementos.</li>
+                                <li>Construye tu oración - Actividad: Oraciones con pictos.</li>
+                                <li>Tablero de comunicación - Actividad: Tablero personalizado.</li>
+                                <li>Construcción de enunciados - Actividad: Enunciados complejos.</li>
+                                <li>Lecturas por nivel - Actividad: Lecturas adaptadas.</li>
+                                <li>Producción de textos - Actividad: Crear textos con apoyo.</li>
+                            </ul>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Alfabetización</h3>
+                            <ul class="space-y-4">
+                                <li class="flex flex-col">
+                                    Vocales - Actividad: Reconocer vocales.
+                                    <img src="https://images.twinkl.co.uk/tw1n/image/private/t_630/image_repo/f7/45/cl-l-1685972952-guia-de-trabajo-las-vocales_ver_1.jpg"
+                                        alt="Guía de vocales" class="activity-img">
+                                </li>
+                                <li class="flex flex-col">
+                                    Abecedario - Actividad: Aprender letras.
+                                    <img src="https://i.pinimg.com/736x/15/da/60/15da60ecc958fa3998869e0cbcd66ab0.jpg"
+                                        alt="Abecedario ilustrado" class="activity-img">
+                                </li>
+                                <li>Sílabas - Actividad: Formar sílabas.</li>
+                                <li>Conciencia fonológica - Actividad: Sonidos y rimas.</li>
+                                <li>Relación grafo fonética - Actividad: Letra-sonido.</li>
+                                <li>Lecturas por nivel - Actividad: Lectura gradual.</li>
+                            </ul>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Vocabulario y semántica</h3>
+                            <ul class="space-y-4">
+                                <li>Sinónimos y antónimos - Actividad: Palabras similares/opuestas.</li>
+                                <li>Tiempos gramaticales - Actividad: Pasado, presente, futuro.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Quiz Example -->
+                        <div class="quiz-container">
+                            <h4 class="text-lg font-semibold text-white mb-2">Quiz Rápido: Vocales</h4>
+                            <p class="text-gray-400">¿Cuál es la vocal en "Abeja"?</p>
+                            <div class="space-y-2">
+                                <button onclick="checkAnswer('A')"
+                                    class="w-full bg-gray-700 py-2 rounded text-white">A</button>
+                                <button onclick="checkAnswer('E')"
+                                    class="w-full bg-gray-700 py-2 rounded text-white">E</button>
+                                <button onclick="checkAnswer('I')"
+                                    class="w-full bg-gray-700 py-2 rounded text-white">I</button>
+                            </div>
+                            <p id="quizFeedback" class="mt-2 text-center"></p>
+                        </div>
+                    </div>
+
+                    <!-- Detalle Numerica -->
+                    <div id="detalleNumerica" class="module-detail hidden">
+                        <div class="flex items-center mb-6">
+                            <button id="backNumericaBtn" class="text-pink-400 hover:text-pink-300 mr-4"><i
+                                    class="fas fa-arrow-left mr-2"></i>Volver</button>
+                            <h2 class="text-2xl font-bold text-pink-400">Módulo: Aventura Numérica</h2>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Conteo y números</h3>
+                            <ul class="space-y-4">
+                                <li class="flex flex-col">
+                                    Clasifica los números y letras - Actividad: Clasificación mixta.
+                                    <img src="https://i.pinimg.com/originals/70/12/f2/7012f2f10fcefda554e3d9754511f01f.jpg"
+                                        alt="Sumas básicas" class="activity-img">
+                                </li>
+                                <li>Empareja y relaciona números - Actividad: Parejas numéricas.</li>
+                                <li>Conoce los números - Actividad: Identificación básica.</li>
+                                <li class="flex flex-col">
+                                    Conteo a base 10 - Actividad: Contar en decenas.
+                                    <img src="https://profe.social/rails/active_storage/representations/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBeWFCR1E9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--aae92e7f83f382bc034b8447486ae6d89be8139e/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDVG9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RkhKbGMybDZaVjkwYjE5c2FXMXBkRnNIYVFKWUFta0NoQU02QzJ4dllXUmxjbnNHT2dsd1lXZGxhUUE2REdOdmJuWmxjblE2Q1hkbFluQT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--deb6266f7a80aa2aa4c4b1597082904ce6899af1/preview-55656-1.jpg"
+                                        alt="Sumas del 0 al 10" class="activity-img">
+                                </li>
+                                <li>Conteo a base 30 - Actividad: Contar hasta 30.</li>
+                                <li>Conteo a base 50 - Actividad: Contar hasta 50.</li>
+                            </ul>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Clasificación y patrones</h3>
+                            <ul class="space-y-4">
+                                <li>Del 1 al 10 (base 10) - Actividad: Secuencia básica.</li>
+                                <li>Familias de números - Actividad: Grupos numéricos.</li>
+                                <li>Valor posicional - Actividad: Unidades, decenas.</li>
+                                <li>Fracciones y decimales - Actividad: Introducción simple.</li>
+                            </ul>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Operaciones básicas</h3>
+                            <ul class="space-y-4">
+                                <li class="flex flex-col">
+                                    Suma - Actividad: Sumas visuales.
+                                    <img src="https://images.twinkl.co.uk/tw1n/image/private/t_630_eco/image_repo/ef/c8/cl-m-1744649584-guia-de-trabajo-sumas-hasta-el-10_ver_2.jpg"
+                                        alt="Guía de sumas hasta 10" class="activity-img">
+                                </li>
+                                <li>Resta - Actividad: Restas con objetos.</li>
+                                <li>Multiplicación - Actividad: Grupos repetidos.</li>
+                                <li>División - Actividad: Repartir equitativo.</li>
+                            </ul>
+                        </div>
+
+                        <div class="sub-section">
+                            <h3 class="text-xl font-semibold text-white mb-2">Geometría y medida</h3>
+                            <ul class="space-y-4">
+                                <li class="flex flex-col">
+                                    Figuras y cuerpos geométricos - Actividad: Identificar formas.
+                                    <img src="https://www.shutterstock.com/image-vector/happy-geometric-shapes-cute-smiling-260nw-2557009639.jpg"
+                                        alt="Figuras geométricas lindas" class="activity-img">
+                                </li>
+                                <li class="flex flex-col">
+                                    Áreas y perímetros - Actividad: Medir simples.
+                                    <img src="https://m.media-amazon.com/images/I/71hob7QTi8L.jpg"
+                                        alt="Bloques geométricos" class="activity-img">
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Quiz Example -->
+                        <div class="quiz-container">
+                            <h4 class="text-lg font-semibold text-white mb-2">Quiz Rápido: Suma Básica</h4>
+                            <p class="text-gray-400">¿Cuánto es 2 + 3?</p>
+                            <div class="space-y-2">
+                                <button onclick="checkAnswer(5)"
+                                    class="w-full bg-gray-700 py-2 rounded text-white">5</button>
+                                <button onclick="checkAnswer(4)"
+                                    class="w-full bg-gray-700 py-2 rounded text-white">4</button>
+                                <button onclick="checkAnswer(6)"
+                                    class="w-full bg-gray-700 py-2 rounded text-white">6</button>
+                            </div>
+                            <p id="quizFeedbackNum" class="mt-2 text-center"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Section (Placeholder) -->
+                <div id="reportsSection" class="fade-in hidden">
+                    <h2 class="text-3xl font-bold mb-6 text-white">Análisis y Reportes</h2>
+                    <p class="text-gray-400 mb-8">Genera reportes detallados de progreso</p>
+                    <!-- Añadir charts o tablas de reportes aquí -->
+                    <div class="bg-gray-800 rounded-xl shadow-lg p-6">
+                        <h3 class="text-lg font-semibold mb-4 text-white">Reporte Semanal</h3>
+                        <p class="text-gray-400">Progreso promedio: 85%</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-4 text-center">
+        <p>&copy; 2025 GProA Technology. Desarrollado con soporte de expertos en educación especial.</p>
+        <p>Contacta: <a href="mailto:info@gproatechnology.com" class="text-blue-300">info@gproatechnology.com</a>
+        </p>
+    </footer>
+
+    <script>
+        // === SPLASHSCREEN ===
+        let currentProgress = 0;
+        function initSplashscreen() {
+            const steps = [
+                { progress: 10, delay: 500 },
+                { progress: 25, delay: 800 },
+                { progress: 40, delay: 1000 },
+                { progress: 60, delay: 1200 },
+                { progress: 80, delay: 800 },
+                { progress: 95, delay: 600 },
+                { progress: 100, delay: 300 }
+            ];
+
+            let stepIndex = 0;
+            const interval = setInterval(() => {
+                if (stepIndex < steps.length) {
+                    const step = steps[stepIndex];
+                    currentProgress = Math.min(currentProgress + (step.progress - currentProgress) * 0.3, step.progress);
+                    updateProgress(currentProgress);
+                    stepIndex++;
+                } else {
+                    currentProgress = 100;
+                    updateProgress(100);
+                    setTimeout(() => {
+                        hideSplashscreen();
+                        checkAuth();
+                    }, 1000);
+                    clearInterval(interval);
+                }
+            }, 800);
+
+            setTimeout(() => document.getElementById('serviceStatus').textContent = '✓', 1500);
+            setTimeout(() => document.getElementById('paymentStatus').textContent = '✓', 2000);
+            setTimeout(() => document.getElementById('accessStatus').textContent = '✓', 3000);
+            setTimeout(() => document.getElementById('metricsStatus').textContent = '✓', 3500);
+        }
+
+        function updateProgress(progress) {
+            document.getElementById('loadCounter').textContent = Math.round(progress) + '%';
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function hideSplashscreen() {
+            const splash = document.getElementById('splashscreen');
+            splash.style.opacity = '0';
+            setTimeout(() => splash.style.display = 'none', 500);
+        }
+
+        // === AUTHENTICATION ===
+        const CLAVES_VALIDAS = {
+            'SAIYDD-TEACHER123': { nombre: 'Prof. María González', email: 'maria.gonzalez@saiydd.edu', rol: 'teacher' },
+            'SAIYDD-ADMIN456': { nombre: 'Dr. Carlos Ruiz', email: 'carlos.ruiz@saiydd.edu', rol: 'admin' }
+        };
+
+        function checkAuth() {
+            const session = localStorage.getItem('saiydd_session');
+            if (session) {
+                const data = JSON.parse(session);
+                showDashboard(data);
+            } else {
+                showAuthModal();
+            }
+        }
+
+        function showAuthModal() {
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function showDashboard(userData) {
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+            document.getElementById('userName').textContent = userData.nombre;
+            document.getElementById('userEmail').textContent = userData.email;
+            initCharts();
+            showDashboardSection('dashboard');
+        }
+
+        function closeAuthModal() {
+            console.log('Closing auth modal...');
+            document.getElementById('authModal').classList.add('hidden');
+            console.log('Auth modal closed. Redirecting to index.html...');
+        }
+
+        function logout() {
+            localStorage.removeItem('saiydd_session');
+            // Hide dashboard and show login modal instead of reloading to splash
+            document.getElementById('dashboardContent').classList.add('hidden');
+            document.getElementById('authModal').classList.remove('hidden');
+            // Reset login form
+            document.getElementById('clave').value = '';
+            document.getElementById('clave').focus();
+        }
+        // Event Listeners
+        document.getElementById('loginForm').onsubmit = function (e) {
+            e.preventDefault();
+            const clave = document.getElementById('clave').value;
+
+            if (CLAVES_VALIDAS[clave]) {
+                const userData = CLAVES_VALIDAS[clave];
+                localStorage.setItem('saiydd_session', JSON.stringify({
+                    clave: clave,
+                    ...userData,
+                    loginTime: new Date().toISOString()
+                }));
+                showDashboard(userData);
+            } else {
+                alert('Clave incorrecta. Verifica con el administrador.');
+                document.getElementById('clave').value = '';
+                document.getElementById('clave').focus();
+            }
+        };
+
+        document.getElementById('tabLogin').onclick = function () {
+            document.getElementById('loginFormContainer').classList.remove('hidden');
+            document.getElementById('registerFormContainer').classList.add('hidden');
+            this.classList.add('bg-blue-50', 'border-blue-600', 'text-blue-600');
+            document.getElementById('tabRegister').classList.remove('bg-blue-50', 'border-blue-600', 'text-blue-600');
+        };
+
+        document.getElementById('tabRegister').onclick = function () {
+            document.getElementById('registerFormContainer').classList.remove('hidden');
+            document.getElementById('loginFormContainer').classList.add('hidden');
+            this.classList.add('bg-blue-50', 'border-blue-600', 'text-blue-600');
+            document.getElementById('tabLogin').classList.remove('bg-blue-50', 'border-blue-600', 'text-blue-600');
+        };
+
+        function initCharts() {
+            // Module Progress Chart
+            const moduleCtx = document.getElementById('moduleChart')?.getContext('2d');
+            if (moduleCtx) {
+                new Chart(moduleCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Mundo de Letras', 'Aventura Numérica'],
+                        datasets: [{
+                            label: 'Progreso (%)',
+                            data: [72, 68],
+                            backgroundColor: ['#3b82f6', '#ec4899'],
+                            borderColor: ['#2563eb', '#db2777'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: { color: '#374151' },
+                                ticks: { color: '#9ca3af' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#9ca3af' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
+            }
+
+            // Level Distribution Chart
+            const levelCtx = document.getElementById('levelChart')?.getContext('2d');
+            if (levelCtx) {
+                new Chart(levelCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Básico', 'Intermedio', 'Avanzado'],
+                        datasets: [{
+                            data: [32, 45, 23],
+                            backgroundColor: ['#10b981', '#3b82f6', '#8b5cf6'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#9ca3af' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('translate-x-0');
+        }
+
+        function showDashboardSection(section) {
+            document.getElementById('dashboardSection').classList.add('hidden');
+            document.getElementById('studentsSection').classList.add('hidden');
+            document.getElementById('modulesSection').classList.add('hidden');
+            document.getElementById('reportsSection').classList.add('hidden');
+            document.getElementById(section + 'Section').classList.remove('hidden');
+        }
+
+        // Explorar Módulos en Dashboard
+        document.getElementById('exploreLetrasBtn').addEventListener('click', () => {
+            showDashboardSection('modules');
+            document.getElementById('overview').classList.add('hidden');
+            document.getElementById('detalleLetras').classList.remove('hidden');
+        });
+
+        document.getElementById('exploreNumericaBtn').addEventListener('click', () => {
+            showDashboardSection('modules');
+            document.getElementById('overview').classList.add('hidden');
+            document.getElementById('detalleNumerica').classList.remove('hidden');
+        });
+
+        // Back Buttons
+        document.getElementById('backLetrasBtn').addEventListener('click', () => {
+            document.getElementById('detalleLetras').classList.add('hidden');
+            document.getElementById('overview').classList.remove('hidden');
+        });
+
+        document.getElementById('backNumericaBtn').addEventListener('click', () => {
+            document.getElementById('detalleNumerica').classList.add('hidden');
+            document.getElementById('overview').classList.remove('hidden');
+        });
+
+        // Quiz Functions
+        function checkAnswer(answer) {
+            const feedback = document.getElementById('quizFeedback');
+            if (answer === 'A') {
+                feedback.textContent = '¡Correcto!';
+                feedback.classList.add('text-green-400');
+            } else {
+                feedback.textContent = 'Intenta de nuevo.';
+                feedback.classList.add('text-red-400');
+            }
+        }
+
+        function checkAnswer(num) {
+            const feedback = document.getElementById('quizFeedbackNum');
+            if (num === 5) {
+                feedback.textContent = '¡Correcto!';
+                feedback.classList.add('text-green-400');
+            } else {
+                feedback.textContent = 'Intenta de nuevo.';
+                feedback.classList.add('text-red-400');
+            }
+        }
+
+        // Search Functionality (Simple Filter Example)
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            // Implementar filtro en secciones visibles, e.g., estudiantes o módulos
+            console.log('Búsqueda: ' + query);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initSplashscreen);
+    </script>
+</body>
+
+</html>

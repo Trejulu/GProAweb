@@ -699,7 +699,12 @@
 
         function logout() {
             localStorage.removeItem('bufalos_session');
-            location.reload();
+            // Hide dashboard and show login modal instead of reloading to splash
+            document.getElementById('dashboardContent').classList.add('hidden');
+            document.getElementById('authModal').classList.remove('hidden');
+            // Reset login form
+            document.getElementById('clave').value = '';
+            document.getElementById('clave').focus();
         }
 
         // Event Listeners
