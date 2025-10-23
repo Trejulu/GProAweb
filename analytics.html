@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Analíticas GProA - Google Analytics</title>
     <meta name="description" content="Accede a las métricas y analíticas de GProA Technology">
 
@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="css/layout/footer.css">
     <link rel="stylesheet" href="css/components/sections.css">
     <link rel="stylesheet" href="css/effects/animations.css">
+
+    <!-- Mobile Optimizations -->
+    <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/mobile-nav.js"></script>
 
     <!-- Fonts y Font Awesome -->
     <link
@@ -95,6 +99,26 @@
 </head>
 
 <body>
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav-overlay" id="mobileNav">
+        <div class="close-menu" id="closeMenu">
+            <i class="fas fa-times"></i>
+        </div>
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="glucai.html" class="nav-link">GLucAI Demo</a>
+        <a href="saiydd.html" class="nav-link">SAIyDD Demo</a>
+        <a href="bufalos.html" class="nav-link">Sistema Búfalos</a>
+        <a href="domotia.html" class="nav-link">DomotIA Demo</a>
+        <a href="analytics.html" class="nav-link">Analíticas</a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn fixed top-4 right-4 z-50 md:hidden" id="mobileMenuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
     <!-- Navegación simplificada -->
     <nav class="main-nav">
         <a href="index.html" class="nav-logo">GProA<span>Technology</span></a>

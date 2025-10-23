@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function initNavigation() {
     const header = document.querySelector('.main-header');
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.main-nav');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const closeMenuBtn = document.querySelector('.close-menu');
 
     // Scroll effect en header
     window.addEventListener('scroll', () => {
@@ -35,15 +36,57 @@ function initNavigation() {
                     block: 'start'
                 });
             }
+            // Cerrar menú móvil después de hacer click en un enlace
+            if (mobileNav && mobileNav.classList.contains('active')) {
+                closeMobileMenu();
+            }
         });
     });
 
-    // Mobile menu toggle
+    // Mobile menu toggle - abrir
     if (mobileMenuBtn) {
         mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileMenuBtn.classList.toggle('active');
+            openMobileMenu();
         });
+    }
+
+    // Mobile menu toggle - cerrar
+    if (closeMenuBtn) {
+        closeMenuBtn.addEventListener('click', () => {
+            closeMobileMenu();
+        });
+    }
+
+    // Cerrar menú móvil al hacer click fuera
+    document.addEventListener('click', (e) => {
+        if (mobileNav && mobileNav.classList.contains('active') &&
+            !mobileNav.contains(e.target) &&
+            !mobileMenuBtn.contains(e.target)) {
+            closeMobileMenu();
+        }
+    });
+
+    // Cerrar menú móvil con tecla Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileNav && mobileNav.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
+
+    function openMobileMenu() {
+        if (mobileNav) {
+            mobileNav.classList.add('active');
+            mobileMenuBtn.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevenir scroll
+        }
+    }
+
+    function closeMobileMenu() {
+        if (mobileNav) {
+            mobileNav.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = ''; // Restaurar scroll
+        }
     }
 }
 
@@ -334,6 +377,26 @@ const additionalStyles = `
 const styleSheet = document.createElement('style');
 styleSheet.textContent = additionalStyles;
 document.head.appendChild(styleSheet);
+
+
+// Tracking de descargas de documentos
+document.addEventListener('DOMContentLoaded', function () {
+    // Tracking de descargas de PDFs
+    document.querySelectorAll('.doc-download').forEach(link => {
+        link.addEventListener('click', function () {
+            // Google Analytics tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'download', {
+                    event_category: 'engagement',
+                    event_label: this.href.split('/').pop()
+                });
+            }
+        });
+    });
+});
+
+// Inicializar partículas cuando se carga la página
+window.addEventListener('load', createParticles);
 
 // Inicializar partículas cuando se carga la página
 window.addEventListener('load', createParticles);

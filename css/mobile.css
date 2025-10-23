@@ -1,0 +1,200 @@
+/* Mobile Optimizations - Shared Styles */
+/* GProA Technology - Optimizaciones móviles compartidas */
+
+@media (max-width: 768px) {
+
+    /* Navegación móvil común */
+    .mobile-nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        padding: 100px 20px;
+    }
+
+    .mobile-nav-overlay.active {
+        transform: translateX(0);
+    }
+
+    .mobile-nav-overlay .nav-link {
+        font-size: 1.2rem;
+        padding: 15px 30px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+        max-width: 300px;
+        color: #e0f2fe;
+        text-decoration: none;
+        border: 1px solid rgba(0, 224, 255, 0.2);
+    }
+
+    .mobile-nav-overlay .nav-link:hover {
+        background: rgba(0, 224, 255, 0.1);
+        border-color: #00e0ff;
+        transform: translateY(-2px);
+    }
+
+    .close-menu {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        color: #e0f2fe;
+        font-size: 2rem;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .close-menu:hover {
+        background: rgba(0, 224, 255, 0.1);
+        transform: scale(1.1);
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+        flex-direction: column;
+        background: none;
+        border: none;
+        cursor: pointer;
+        gap: 4px;
+        padding: 10px;
+    }
+
+    .mobile-menu-btn span {
+        width: 25px;
+        height: 3px;
+        background: #e0f2fe;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* Layout adjustments */
+    .main-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .sidebar {
+        position: fixed !important;
+        width: 100% !important;
+        height: 100vh !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s ease !important;
+        z-index: 30 !important;
+    }
+
+    .sidebar.active {
+        transform: translateX(0) !important;
+    }
+
+    /* Table responsiveness */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Grid adjustments */
+    .room-grid,
+    .device-grid,
+    .scenario-grid,
+    .energy-stats,
+    .analytics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    }
+
+    .device-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    /* Header adjustments */
+    .header-content {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+
+    .header-actions {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    /* Touch-friendly buttons */
+    .btn,
+    .auth-button,
+    .submit-btn {
+        min-height: 44px !important;
+        padding: 12px 20px !important;
+        font-size: 16px !important;
+    }
+
+    /* Modal adjustments */
+    .auth-container,
+    .demo-modal {
+        margin: 20px !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+    }
+
+    /* Chart responsiveness */
+    .chart-container {
+        height: 250px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .mobile-nav-overlay {
+        padding: 80px 15px;
+        gap: 20px;
+    }
+
+    .mobile-nav-overlay .nav-link {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+        max-width: 250px;
+    }
+
+    .room-grid,
+    .device-grid,
+    .scenario-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .device-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .energy-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .analytics-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .chart-container {
+        height: 200px !important;
+    }
+}
