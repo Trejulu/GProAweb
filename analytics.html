@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analíticas GProA - Google Analytics</title>
+    <meta name="description" content="Accede a las métricas y analíticas de GProA Technology">
+
+    <!-- Estilos base (copia de index.html para consistencia) -->
+    <link rel="stylesheet" href="css/base/variables.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/layout/navigation.css">
+    <link rel="stylesheet" href="css/layout/footer.css">
+    <link rel="stylesheet" href="css/components/sections.css">
+    <link rel="stylesheet" href="css/effects/animations.css">
+
+    <!-- Fonts y Font Awesome -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Exo+2:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Analytics tracking -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0HVQBRPTWY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-0HVQBRPTWY');
+    </script>
+
+    <style>
+        /* Estilos específicos para la página de analíticas */
+        .analytics-hero {
+            background: linear-gradient(135deg, rgba(0, 10, 20, 0.9), rgba(0, 224, 255, 0.1));
+            padding: 100px 20px;
+            text-align: center;
+            color: #e0f2fe;
+        }
+
+        .analytics-hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .analytics-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .analytics-card {
+            background: rgba(0, 10, 20, 0.5);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 224, 255, 0.1);
+            border: 1px solid rgba(0, 224, 255, 0.1);
+        }
+
+        .analytics-card h3 {
+            color: #00e0ff;
+            margin-bottom: 15px;
+        }
+
+        .analytics-card p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(45deg, #0066ff, #00e0ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 224, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navegación simplificada -->
+    <nav class="main-nav">
+        <a href="index.html" class="nav-logo">GProA<span>Technology</span></a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Inicio</a>
+            <a href="analytics.html" class="nav-link active">Analíticas</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="analytics-hero">
+        <h1>Centro de Analíticas GProA</h1>
+        <p>Monitorea el rendimiento de nuestro sitio y proyectos con métricas en tiempo real.</p>
+    </section>
+
+    <!-- Contenido principal -->
+    <section class="analytics-content">
+        <div class="analytics-grid">
+            <div class="analytics-card">
+                <h3><i class="fas fa-chart-line"></i> Google Analytics</h3>
+                <p>Accede al dashboard completo de Google Analytics para ver visitas, conversiones y comportamiento de
+                    usuarios.</p>
+                <a href="https://analytics.google.com/" target="_blank" class="btn">Ver Dashboard</a>
+            </div>
+            <div class="analytics-card">
+                <h3><i class="fas fa-search"></i> Search Console</h3>
+                <p>Revisa el rendimiento en búsquedas de Google, palabras clave y errores de indexación.</p>
+                <a href="https://search.google.com/search-console" target="_blank" class="btn">Ver Search Console</a>
+            </div>
+            <div class="analytics-card">
+                <h3><i class="fas fa-tachometer-alt"></i> Métricas en Tiempo Real</h3>
+                <p>Visualiza datos clave como visitas activas, páginas vistas y fuentes de tráfico.</p>
+                <a href="#metrics" class="btn">Ver Métricas</a>
+            </div>
+        </div>
+
+        <!-- Sección de métricas (ejemplo con Chart.js) -->
+        <div id="metrics" class="analytics-card" style="margin-top: 50px; grid-column: 1 / -1;">
+            <h3>Métricas de Rendimiento</h3>
+            <canvas id="performanceChart" width="400" height="200"></canvas>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <a href="index.html" class="footer-logo">GProA<span>Technology</span></a>
+                <p>Líderes en automatización inteligente y desarrollo de software con IA.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 GPROA Technology, S. de R.L. de C.V. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Gráfica de ejemplo (puedes reemplazar con datos reales de GA4)
+        const ctx = document.getElementById('performanceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Visitas Mensuales',
+                    data: [1200, 1500, 1800, 2100, 2400, 2700],
+                    borderColor: '#00e0ff',
+                    backgroundColor: 'rgba(0, 224, 255, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: '#e0f2fe' } }
+                },
+                scales: {
+                    x: { ticks: { color: '#94a3b8' } },
+                    y: { ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

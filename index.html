@@ -140,6 +140,509 @@
             background: rgba(0, 224, 255, 0.1);
             margin-right: auto;
         }
+
+        /* Estilos para el organigrama */
+        .org-chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(0, 10, 20, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 224, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 224, 255, 0.1);
+            min-height: 400px;
+        }
+
+        /* Initial view styles */
+        .org-chart-initial-view {
+            text-align: center;
+            width: 100%;
+        }
+
+        .executive-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .executive-btn {
+            background: linear-gradient(135deg, rgba(0, 10, 20, 0.8), rgba(0, 40, 80, 0.8));
+            border: 2px solid rgba(0, 224, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 320px;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 224, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .executive-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 224, 255, 0.3);
+            border-color: rgba(0, 224, 255, 0.6);
+        }
+
+        .ceo-btn:hover {
+            border-color: #60a5fa;
+            box-shadow: 0 8px 25px rgba(96, 165, 250, 0.3);
+        }
+
+        .coo-btn:hover {
+            border-color: #c084fc;
+            box-shadow: 0 8px 25px rgba(192, 132, 252, 0.3);
+        }
+
+        .executive-image {
+            flex-shrink: 0;
+        }
+
+        .executive-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(0, 224, 255, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .executive-btn:hover .executive-photo {
+            border-color: rgba(0, 224, 255, 0.8);
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 224, 255, 0.3);
+        }
+
+        .ceo-btn .executive-photo {
+            border-color: #60a5fa;
+        }
+
+        .coo-btn .executive-photo {
+            border-color: #c084fc;
+        }
+
+        .ceo-btn:hover .executive-photo {
+            border-color: #60a5fa;
+            box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
+        }
+
+        .coo-btn:hover .executive-photo {
+            border-color: #c084fc;
+            box-shadow: 0 6px 20px rgba(192, 132, 252, 0.4);
+        }
+
+        .executive-info h3 {
+            color: #e0f2fe;
+            font-size: 24px;
+            margin: 0 0 5px 0;
+            font-weight: bold;
+        }
+
+        .executive-info p {
+            color: #93c5fd;
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+
+        .executive-name {
+            color: #00e0ff;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .org-chart-preview {
+            color: #94a3b8;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        /* Detailed view styles */
+        .org-chart-detailed-view {
+            width: 100%;
+        }
+
+        .detailed-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 224, 255, 0.2);
+        }
+
+        .back-btn {
+            background: linear-gradient(45deg, #0066ff, #00e0ff);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 224, 255, 0.3);
+        }
+
+        .detailed-header #detailedTitle {
+            color: #e0f2fe;
+            font-size: 24px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .org-chart-svg {
+            width: 100%;
+            max-width: 1200px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        /* Interactive elements */
+        .org-chart-svg rect {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .org-chart-svg rect:hover {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+        }
+
+        .org-chart-svg .ceo-box:hover {
+            stroke: #93c5fd;
+            stroke-width: 4;
+        }
+
+        .org-chart-svg .coo-box:hover {
+            stroke: #d8b4fe;
+            stroke-width: 4;
+        }
+
+        /* Modal styles */
+        .org-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .org-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(0, 10, 20, 0.95), rgba(0, 40, 80, 0.95));
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 224, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 224, 255, 0.2);
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 224, 255, 0.2);
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            color: #e0f2fe;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #93c5fd;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 224, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            color: #e0f2fe;
+            line-height: 1.6;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section h3 {
+            color: #00e0ff;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .modal-section ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .modal-section li {
+            margin-bottom: 5px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Gartner Metrics Styles */
+        .gartner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(0, 10, 20, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 224, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 224, 255, 0.1);
+            min-height: 400px;
+        }
+
+        /* Initial view styles */
+        .gartner-initial-view {
+            text-align: center;
+            width: 100%;
+        }
+
+        .metric-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            max-width: 1200px;
+        }
+
+        .metric-category-btn {
+            background: linear-gradient(135deg, rgba(0, 10, 20, 0.8), rgba(0, 40, 80, 0.8));
+            border: 2px solid rgba(0, 224, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 224, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .metric-category-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 224, 255, 0.3);
+            border-color: rgba(0, 224, 255, 0.6);
+        }
+
+        .quadrant-btn:hover {
+            border-color: #60a5fa;
+            box-shadow: 0 8px 25px rgba(96, 165, 250, 0.3);
+        }
+
+        .evolution-btn:hover {
+            border-color: #10b981;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .solutions-btn:hover {
+            border-color: #f59e0b;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+        }
+
+        .market-btn:hover {
+            border-color: #ef4444;
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+        }
+
+        .analysis-btn:hover {
+            border-color: #8b5cf6;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .metric-icon {
+            font-size: 48px;
+            color: rgba(0, 224, 255, 0.7);
+            flex-shrink: 0;
+        }
+
+        .quadrant-btn .metric-icon {
+            color: #60a5fa;
+        }
+
+        .evolution-btn .metric-icon {
+            color: #10b981;
+        }
+
+        .solutions-btn .metric-icon {
+            color: #f59e0b;
+        }
+
+        .market-btn .metric-icon {
+            color: #ef4444;
+        }
+
+        .analysis-btn .metric-icon {
+            color: #8b5cf6;
+        }
+
+        .metric-info h3 {
+            color: #e0f2fe;
+            font-size: 20px;
+            margin: 0 0 5px 0;
+            font-weight: bold;
+        }
+
+        .metric-info p {
+            color: #93c5fd;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .gartner-preview {
+            color: #94a3b8;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        /* Detailed view styles */
+        .gartner-detailed-view {
+            width: 100%;
+        }
+
+        .gartner-view {
+            width: 100%;
+        }
+
+        .single-metric {
+            justify-content: center;
+        }
+
+        .single-metric .metric-card {
+            max-width: 800px;
+        }
+
+        /* Responsive para el organigrama */
+        @media (max-width: 768px) {
+            .org-chart-container {
+                padding: 10px;
+                margin: 20px 0;
+            }
+
+            .executive-buttons {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .executive-btn {
+                min-width: auto;
+                max-width: 100%;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .executive-photo {
+                width: 140px;
+                height: 140px;
+            }
+
+            .org-chart-svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+
+            /* Gartner responsive */
+            .gartner-container {
+                padding: 10px;
+                margin: 20px 0;
+            }
+
+            .metric-categories {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .metric-category-btn {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .metric-icon {
+                font-size: 40px;
+            }
+        }
     </style>
     <!-- Chart.js para gráficas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -265,7 +768,7 @@
 
     <!-- Navegación -->
     <nav class="main-nav">
-        <a href="#inicio" class="nav-logo">GProA<span>Technology</span></a>
+        <a href="analytics.html" class="nav-logo" title="Ver Analíticas de GProA">GProA<span>Technology</span></a>
         <div class="nav-links">
             <a href="#inicio" class="nav-link">Inicio</a>
             <a href="#servicios" class="nav-link">Servicios</a>
@@ -571,168 +1074,260 @@
                 Gartner para soluciones de IA e Ingeniería Automatizada.</p>
         </div>
 
+        <!-- Gartner Metrics Container -->
         <div class="gartner-container">
-            <div class="gartner-intro">
-                <div class="intro-card">
-                    <h3><i class="fas fa-chart-line"></i> Cuadrante Mágico de Gartner</h3>
-                    <p>El Cuadrante Mágico de Gartner es una herramienta que proporciona un posicionamiento competitivo
-                        gráfico de proveedores de tecnología para ayudar a tomar decisiones de inversión inteligentes.
-                    </p>
-
-                    <div class="quadrant-types">
-                        <div class="quadrant-type">
-                            <div class="type-icon leaders">
-                                <i class="fas fa-crown"></i>
-                            </div>
-                            <div class="type-info">
-                                <h4>Líderes</h4>
-                                <p>Ejecutan bien su visión actual y están bien posicionados para el mañana.</p>
-                            </div>
+            <!-- Initial View with Metric Categories -->
+            <div class="gartner-initial-view" id="gartnerInitialView">
+                <div class="metric-categories">
+                    <button class="metric-category-btn quadrant-btn" onclick="showGartnerDetailedView('quadrant')">
+                        <div class="metric-icon">
+                            <i class="fas fa-crosshairs"></i>
                         </div>
-
-                        <div class="quadrant-type">
-                            <div class="type-icon visionaries">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <div class="type-info">
-                                <h4>Visionarios</h4>
-                                <p>Entienden hacia dónde va el mercado pero aún no ejecutan bien.</p>
-                            </div>
+                        <div class="metric-info">
+                            <h3>Cuadrante Mágico</h3>
+                            <p>Posicionamiento competitivo de GProA</p>
                         </div>
+                    </button>
 
-                        <div class="quadrant-type">
-                            <div class="type-icon challengers">
-                                <i class="fas fa-fist-raised"></i>
-                            </div>
-                            <div class="type-info">
-                                <h4>Retadores</h4>
-                                <p>Ejecutan bien hoy o pueden dominar un segmento grande.</p>
-                            </div>
+                    <button class="metric-category-btn evolution-btn" onclick="showGartnerDetailedView('evolution')">
+                        <div class="metric-icon">
+                            <i class="fas fa-trending-up"></i>
                         </div>
+                        <div class="metric-info">
+                            <h3>Evolución de Capacidades</h3>
+                            <p>Crecimiento en IA y automatización</p>
+                        </div>
+                    </button>
 
-                        <div class="quadrant-type">
-                            <div class="type-icon niche">
-                                <i class="fas fa-bullseye"></i>
-                            </div>
-                            <div class="type-info">
-                                <h4>Jugadores de Nicho</h4>
-                                <p>Se enfocan con éxito en un segmento pequeño.</p>
-                            </div>
+                    <button class="metric-category-btn solutions-btn" onclick="showGartnerDetailedView('solutions')">
+                        <div class="metric-icon">
+                            <i class="fas fa-balance-scale"></i>
                         </div>
-                    </div>
+                        <div class="metric-info">
+                            <h3>Comparativa de Soluciones</h3>
+                            <p>Análisis competitivo por categoría</p>
+                        </div>
+                    </button>
+
+                    <button class="metric-category-btn market-btn" onclick="showGartnerDetailedView('market')">
+                        <div class="metric-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3>Proyección de Mercado</h3>
+                            <p>Tendencias y oportunidades futuras</p>
+                        </div>
+                    </button>
+
+                    <button class="metric-category-btn analysis-btn" onclick="showGartnerDetailedView('analysis')">
+                        <div class="metric-icon">
+                            <i class="fas fa-microscope"></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3>Análisis Estratégico</h3>
+                            <p>Fortalezas y oportunidades de crecimiento</p>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="gartner-preview">
+                    <p>Haz clic en cualquiera de las categorías para explorar las métricas detalladas de Gartner</p>
                 </div>
             </div>
 
-            <div class="gartner-quadrant-section">
-                <h3><i class="fas fa-crosshairs"></i> Posicionamiento de GProA en Soluciones de IA Industrial</h3>
-                <div class="quadrant-wrapper">
-                    <canvas id="gartnerQuadrant" width="500" height="500"></canvas>
-                    <div class="quadrant-legend">
-                        <div class="legend-item gproa">
-                            <div class="legend-dot"></div>
-                            <span>GProA Technology</span>
-                        </div>
-                        <div class="legend-item competitors">
-                            <div class="legend-dot"></div>
-                            <span>Competidores</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-header">
-                        <h3><i class="fas fa-trending-up"></i> Evolución de Capacidades</h3>
-                        <p>Progreso en los últimos 3 años</p>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="evolutionChart" width="400" height="300"></canvas>
-                    </div>
-                    <div class="metric-insights">
-                        <div class="insight">
-                            <span class="insight-label">Crecimiento IA:</span>
-                            <span class="insight-value">+340%</span>
-                        </div>
-                        <div class="insight">
-                            <span class="insight-label">Automatización:</span>
-                            <span class="insight-value">+280%</span>
-                        </div>
-                    </div>
+            <!-- Detailed Views -->
+            <div class="gartner-detailed-view" id="gartnerDetailedView" style="display: none;">
+                <div class="detailed-header">
+                    <button class="back-btn" onclick="showGartnerInitialView()">
+                        <i class="fas fa-arrow-left"></i> Volver a Categorías
+                    </button>
+                    <h3 id="gartnerDetailedTitle">Métricas Gartner</h3>
                 </div>
 
-                <div class="metric-card">
-                    <div class="metric-header">
-                        <h3><i class="fas fa-balance-scale"></i> Comparativa de Soluciones</h3>
-                        <p>Análisis competitivo por categoría</p>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="solutionsChart" width="400" height="300"></canvas>
-                    </div>
-                    <div class="metric-insights">
-                        <div class="insight">
-                            <span class="insight-label">Innovación:</span>
-                            <span class="insight-value">92/100</span>
-                        </div>
-                        <div class="insight">
-                            <span class="insight-label">Especialización:</span>
-                            <span class="insight-value">88/100</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- Quadrant View -->
+                <div class="gartner-view" id="quadrantView" style="display: none;">
+                    <div class="gartner-intro">
+                        <div class="intro-card">
+                            <h3><i class="fas fa-chart-line"></i> Cuadrante Mágico de Gartner</h3>
+                            <p>El Cuadrante Mágico de Gartner es una herramienta que proporciona un posicionamiento
+                                competitivo
+                                gráfico de proveedores de tecnología para ayudar a tomar decisiones de inversión
+                                inteligentes.
+                            </p>
 
-                <div class="metric-card">
-                    <div class="metric-header">
-                        <h3><i class="fas fa-rocket"></i> Proyección de Mercado</h3>
-                        <p>Tendencias y oportunidades 2025-2027</p>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="marketChart" width="400" height="300"></canvas>
-                    </div>
-                    <div class="metric-insights">
-                        <div class="insight">
-                            <span class="insight-label">Mercado IA Industrial:</span>
-                            <span class="insight-value">$47.2B</span>
-                        </div>
-                        <div class="insight">
-                            <span class="insight-label">CAGR 2025-2027:</span>
-                            <span class="insight-value">23.4%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="quadrant-types">
+                                <div class="quadrant-type">
+                                    <div class="type-icon leaders">
+                                        <i class="fas fa-crown"></i>
+                                    </div>
+                                    <div class="type-info">
+                                        <h4>Líderes</h4>
+                                        <p>Ejecutan bien su visión actual y están bien posicionados para el mañana.</p>
+                                    </div>
+                                </div>
 
-            <div class="gartner-analysis">
-                <div class="analysis-card">
-                    <h3><i class="fas fa-microscope"></i> Análisis Estratégico</h3>
-                    <div class="analysis-content">
-                        <div class="strength-item">
-                            <div class="strength-icon">
-                                <i class="fas fa-plus-circle"></i>
-                            </div>
-                            <div class="strength-text">
-                                <h4>Fortalezas Clave</h4>
-                                <ul>
-                                    <li>Especialización en IA para ingeniería eléctrica e industrial</li>
-                                    <li>Soluciones verticales altamente especializadas (GECRAI, GIACELIA)</li>
-                                    <li>Enfoque en sectores de alta regulación y complejidad técnica</li>
-                                    <li>Integración nativa con herramientas CAD/CAE estándar</li>
-                                </ul>
+                                <div class="quadrant-type">
+                                    <div class="type-icon visionaries">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
+                                    <div class="type-info">
+                                        <h4>Visionarios</h4>
+                                        <p>Entienden hacia dónde va el mercado pero aún no ejecutan bien.</p>
+                                    </div>
+                                </div>
+
+                                <div class="quadrant-type">
+                                    <div class="type-icon challengers">
+                                        <i class="fas fa-fist-raised"></i>
+                                    </div>
+                                    <div class="type-info">
+                                        <h4>Retadores</h4>
+                                        <p>Ejecutan bien hoy o pueden dominar un segmento grande.</p>
+                                    </div>
+                                </div>
+
+                                <div class="quadrant-type">
+                                    <div class="type-icon niche">
+                                        <i class="fas fa-bullseye"></i>
+                                    </div>
+                                    <div class="type-info">
+                                        <h4>Jugadores de Nicho</h4>
+                                        <p>Se enfocan con éxito en un segmento pequeño.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="opportunity-item">
-                            <div class="opportunity-icon">
-                                <i class="fas fa-lightbulb"></i>
+                    <div class="gartner-quadrant-section">
+                        <h3><i class="fas fa-crosshairs"></i> Posicionamiento de GProA en Soluciones de IA Industrial
+                        </h3>
+                        <div class="quadrant-wrapper">
+                            <canvas id="gartnerQuadrant" width="500" height="500"></canvas>
+                            <div class="quadrant-legend">
+                                <div class="legend-item gproa">
+                                    <div class="legend-dot"></div>
+                                    <span>GProA Technology</span>
+                                </div>
+                                <div class="legend-item competitors">
+                                    <div class="legend-dot"></div>
+                                    <span>Competidores</span>
+                                </div>
                             </div>
-                            <div class="opportunity-text">
-                                <h4>Oportunidades de Crecimiento</h4>
-                                <ul>
-                                    <li>Expansión a mercados internacionales (LATAM, Europa)</li>
-                                    <li>Desarrollo de APIs para ecosistemas de terceros</li>
-                                    <li>Integración con plataformas IoT y gemelos digitales</li>
-                                    <li>Certificaciones internacionales (ISO, IEC, IEEE)</li>
-                                </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evolution View -->
+                <div class="gartner-view" id="evolutionView" style="display: none;">
+                    <div class="metrics-grid single-metric">
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <h3><i class="fas fa-trending-up"></i> Evolución de Capacidades</h3>
+                                <p>Progreso en los últimos 3 años</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="evolutionChart" width="400" height="300"></canvas>
+                            </div>
+                            <div class="metric-insights">
+                                <div class="insight">
+                                    <span class="insight-label">Crecimiento IA:</span>
+                                    <span class="insight-value">+340%</span>
+                                </div>
+                                <div class="insight">
+                                    <span class="insight-label">Automatización:</span>
+                                    <span class="insight-value">+280%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solutions View -->
+                <div class="gartner-view" id="solutionsView" style="display: none;">
+                    <div class="metrics-grid single-metric">
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <h3><i class="fas fa-balance-scale"></i> Comparativa de Soluciones</h3>
+                                <p>Análisis competitivo por categoría</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="solutionsChart" width="400" height="300"></canvas>
+                            </div>
+                            <div class="metric-insights">
+                                <div class="insight">
+                                    <span class="insight-label">Innovación:</span>
+                                    <span class="insight-value">92/100</span>
+                                </div>
+                                <div class="insight">
+                                    <span class="insight-label">Especialización:</span>
+                                    <span class="insight-value">88/100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market View -->
+                <div class="gartner-view" id="marketView" style="display: none;">
+                    <div class="metrics-grid single-metric">
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <h3><i class="fas fa-rocket"></i> Proyección de Mercado</h3>
+                                <p>Tendencias y oportunidades 2025-2027</p>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="marketChart" width="400" height="300"></canvas>
+                            </div>
+                            <div class="metric-insights">
+                                <div class="insight">
+                                    <span class="insight-label">Mercado IA Industrial:</span>
+                                    <span class="insight-value">$47.2B</span>
+                                </div>
+                                <div class="insight">
+                                    <span class="insight-label">CAGR 2025-2027:</span>
+                                    <span class="insight-value">23.4%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis View -->
+                <div class="gartner-view" id="analysisView" style="display: none;">
+                    <div class="gartner-analysis">
+                        <div class="analysis-card">
+                            <h3><i class="fas fa-microscope"></i> Análisis Estratégico</h3>
+                            <div class="analysis-content">
+                                <div class="strength-item">
+                                    <div class="strength-icon">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </div>
+                                    <div class="strength-text">
+                                        <h4>Fortalezas Clave</h4>
+                                        <ul>
+                                            <li>Especialización en IA para ingeniería eléctrica e industrial</li>
+                                            <li>Soluciones verticales altamente especializadas (GECRAI, GIACELIA)</li>
+                                            <li>Enfoque en sectores de alta regulación y complejidad técnica</li>
+                                            <li>Integración nativa con herramientas CAD/CAE estándar</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="opportunity-item">
+                                    <div class="opportunity-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="opportunity-text">
+                                        <h4>Oportunidades de Crecimiento</h4>
+                                        <ul>
+                                            <li>Expansión a mercados internacionales (LATAM, Europa)</li>
+                                            <li>Desarrollo de APIs para ecosistemas de terceros</li>
+                                            <li>Integración con plataformas IoT y gemelos digitales</li>
+                                            <li>Certificaciones internacionales (ISO, IEC, IEEE)</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -749,23 +1344,288 @@
                 estratégicos.</p>
         </div>
 
-        <div class="team-grid">
-            <div class="team-member">
-                <img src="CEO.png" alt="Abdel Lugo Trejo - CEO" class="member-avatar">
-                <h3>Abdel Lugo Trejo</h3>
-                <span class="position">Desarrollo e Investigación</span>
-                <p>Fundador de GProA Technology, especialista en automatización y sistemas inteligentes. Ha liderado el
-                    desarrollo de soluciones como GECRAI y GIACELIA.</p>
+        <!-- Organizational Chart SVG -->
+        <div class="org-chart-container">
+            <div class="org-chart-initial-view" id="initialView">
+                <div class="executive-buttons">
+                    <button class="executive-btn ceo-btn" onclick="showDetailedOrgChart('CEO')">
+                        <div class="executive-image">
+                            <img src="CEO.png" alt="Abdel Lugo Trejo - CEO" class="executive-photo">
+                        </div>
+                        <div class="executive-info">
+                            <h3>CEO</h3>
+                            <p>Chief Executive Officer</p>
+                            <span class="executive-name">Abdel Lugo Trejo</span>
+                        </div>
+                    </button>
+                    <button class="executive-btn coo-btn" onclick="showDetailedOrgChart('COO')">
+                        <div class="executive-image">
+                            <img src="COO.png" alt="Israel Reséndiz Gálvez - COO" class="executive-photo">
+                        </div>
+                        <div class="executive-info">
+                            <h3>COO</h3>
+                            <p>Chief Operating Officer</p>
+                            <span class="executive-name">Israel Reséndiz Gálvez</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="org-chart-preview">
+                    <p>Haz clic en CEO o COO para explorar la estructura organizacional completa</p>
+                </div>
             </div>
 
-            <div class="team-member">
-                <img src="COO.png" alt="Israel Reséndiz Gálvez - COO" class="member-avatar">
-                <h3>Israel Reséndiz Gálvez</h3>
-                <span class="position">Administración General</span>
-                <p>Responsable de liderar la operación y la estructura administrativa de GProA Technology. Supervisa las
-                    áreas legales, contables y de cumplimiento normativo.</p>
+            <div class="org-chart-detailed-view" id="detailedView" style="display: none;">
+                <div class="detailed-header">
+                    <button class="back-btn" onclick="showInitialView()">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </button>
+                    <h3 id="detailedTitle">Estructura Organizacional</h3>
+                </div>
+                <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" class="org-chart-svg">
+                    <defs>
+                        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#1e40af;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="ceoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="cooGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Background -->
+                    <rect width="1200" height="800" fill="url(#bgGrad)" />
+
+                    <!-- Title -->
+                    <text x="600" y="50" font-size="36" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        GProA Technology
+                    </text>
+                    <text x="600" y="80" font-size="18" fill="#93c5fd" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Estructura Organizacional
+                    </text>
+
+                    <!-- CEO Box -->
+                    <rect x="250" y="120" width="280" height="180" rx="15" fill="url(#ceoGrad)" stroke="#60a5fa"
+                        stroke-width="3" />
+                    <text x="390" y="155" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        CEO
+                    </text>
+                    <text x="390" y="180" font-size="14" fill="#dbeafe" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Chief Executive Officer
+                    </text>
+                    <text x="270" y="210" font-size="13" font-weight="bold" fill="#ffffff"
+                        font-family="Arial, sans-serif">
+                        Responsabilidades:
+                    </text>
+                    <text x="270" y="230" font-size="12" fill="#dbeafe" font-family="Arial, sans-serif">
+                        • Visión estratégica
+                    </text>
+                    <text x="270" y="248" font-size="12" fill="#dbeafe" font-family="Arial, sans-serif">
+                        • Desarrollo de productos
+                    </text>
+                    <text x="270" y="266" font-size="12" fill="#dbeafe" font-family="Arial, sans-serif">
+                        • Dirección técnica
+                    </text>
+                    <text x="270" y="284" font-size="12" fill="#dbeafe" font-family="Arial, sans-serif">
+                        • Relaciones con clientes
+                    </text>
+
+                    <!-- COO Box -->
+                    <rect x="670" y="120" width="280" height="180" rx="15" fill="url(#cooGrad)" stroke="#c084fc"
+                        stroke-width="3" />
+                    <text x="810" y="155" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        COO
+                    </text>
+                    <text x="810" y="180" font-size="14" fill="#e9d5ff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Chief Operating Officer
+                    </text>
+                    <text x="690" y="210" font-size="13" font-weight="bold" fill="#ffffff"
+                        font-family="Arial, sans-serif">
+                        Responsabilidades:
+                    </text>
+                    <text x="690" y="230" font-size="12" fill="#e9d5ff" font-family="Arial, sans-serif">
+                        • Operaciones diarias
+                    </text>
+                    <text x="690" y="248" font-size="12" fill="#e9d5ff" font-family="Arial, sans-serif">
+                        • Administración
+                    </text>
+                    <text x="690" y="266" font-size="12" fill="#e9d5ff" font-family="Arial, sans-serif">
+                        • Legal y cumplimiento
+                    </text>
+                    <text x="690" y="284" font-size="12" fill="#e9d5ff" font-family="Arial, sans-serif">
+                        • Finanzas y contabilidad
+                    </text>
+
+                    <!-- Connecting lines -->
+                    <line x1="390" y1="300" x2="390" y2="340" stroke="#60a5fa" stroke-width="3" />
+                    <line x1="810" y1="300" x2="810" y2="340" stroke="#c084fc" stroke-width="3" />
+                    <line x1="390" y1="340" x2="810" y2="340" stroke="#60a5fa" stroke-width="3" />
+                    <line x1="600" y1="340" x2="600" y2="380" stroke="#60a5fa" stroke-width="3" />
+
+                    <!-- Functional Areas Title -->
+                    <rect x="100" y="395" width="1000" height="360" rx="20" fill="rgba(255,255,255,0.05)"
+                        stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+                    <text x="600" y="430" font-size="22" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Áreas Funcionales
+                    </text>
+
+                    <!-- Area boxes - Row 1 -->
+                    <!-- Desarrollo -->
+                    <rect x="130" y="460" width="200" height="100" rx="10" fill="#059669" opacity="0.9" />
+                    <text x="230" y="495" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Desarrollo
+                    </text>
+                    <text x="230" y="515" font-size="11" fill="#d1fae5" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Software & Apps
+                    </text>
+                    <circle cx="230" cy="540" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="230" y="546" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        </>
+                    </text>
+
+                    <!-- IA & ML -->
+                    <rect x="360" y="460" width="200" height="100" rx="10" fill="#db2777" opacity="0.9" />
+                    <text x="460" y="495" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        IA & ML
+                    </text>
+                    <text x="460" y="515" font-size="11" fill="#fce7f3" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Inteligencia Artificial
+                    </text>
+                    <circle cx="460" cy="540" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="460" y="546" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        🧠
+                    </text>
+
+                    <!-- Automatización -->
+                    <rect x="590" y="460" width="200" height="100" rx="10" fill="#ea580c" opacity="0.9" />
+                    <text x="690" y="495" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Automatización
+                    </text>
+                    <text x="690" y="515" font-size="11" fill="#fed7aa" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Industrial & Control
+                    </text>
+                    <circle cx="690" cy="540" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="690" y="546" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        ⚙️
+                    </text>
+
+                    <!-- Consultoría -->
+                    <rect x="820" y="460" width="200" height="100" rx="10" fill="#0891b2" opacity="0.9" />
+                    <text x="920" y="495" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Consultoría
+                    </text>
+                    <text x="920" y="515" font-size="11" fill="#cffafe" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Estrategia & Proyectos
+                    </text>
+                    <circle cx="920" cy="540" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="920" y="546" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        👥
+                    </text>
+
+                    <!-- Area boxes - Row 2 -->
+                    <!-- Soporte -->
+                    <rect x="130" y="590" width="200" height="100" rx="10" fill="#4f46e5" opacity="0.9" />
+                    <text x="230" y="625" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Soporte
+                    </text>
+                    <text x="230" y="645" font-size="11" fill="#e0e7ff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Técnico & Clientes
+                    </text>
+                    <circle cx="230" cy="670" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="230" y="676" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        🎧
+                    </text>
+
+                    <!-- Documentación -->
+                    <rect x="360" y="590" width="200" height="100" rx="10" fill="#0d9488" opacity="0.9" />
+                    <text x="460" y="625" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Documentación
+                    </text>
+                    <text x="460" y="645" font-size="11" fill="#ccfbf1" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Técnica & Legal
+                    </text>
+                    <circle cx="460" cy="670" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="460" y="676" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        📄
+                    </text>
+
+                    <!-- Administración -->
+                    <rect x="590" y="590" width="200" height="100" rx="10" fill="#7c3aed" opacity="0.9" />
+                    <text x="690" y="625" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Administración
+                    </text>
+                    <text x="690" y="645" font-size="11" fill="#ede9fe" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Finanzas & Legal
+                    </text>
+                    <circle cx="690" cy="670" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="690" y="676" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        🏢
+                    </text>
+
+                    <!-- Ventas -->
+                    <rect x="820" y="590" width="200" height="100" rx="10" fill="#e11d48" opacity="0.9" />
+                    <text x="920" y="625" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Ventas
+                    </text>
+                    <text x="920" y="645" font-size="11" fill="#ffe4e6" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Marketing & BD
+                    </text>
+                    <circle cx="920" cy="670" r="15" fill="rgba(255,255,255,0.2)" />
+                    <text x="920" y="676" font-size="18" fill="#ffffff" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        📈
+                    </text>
+
+                    <!-- Footer note -->
+                    <rect x="150" y="720" width="900" height="50" rx="8" fill="rgba(59,130,246,0.1)"
+                        stroke="rgba(96,165,250,0.3)" stroke-width="1" />
+                    <text x="600" y="745" font-size="12" fill="#93c5fd" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        Modelo Ágil: CEO y COO lideran funciones transversales, colaborando con partners y especialistas
+                    </text>
+                    <text x="600" y="762" font-size="12" fill="#93c5fd" text-anchor="middle"
+                        font-family="Arial, sans-serif">
+                        según las necesidades de cada proyecto
+                    </text>
+                </svg>
             </div>
         </div>
+
     </section>
 
     <!-- Contacto -->
@@ -851,7 +1711,8 @@
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-about">
-                <a href="#inicio" class="footer-logo">GProA<span>Technology</span></a>
+                <a href="analytics.html" class="footer-logo"
+                    title="Ver Analíticas de GProA">GProA<span>Technology</span></a>
                 <p>Líderes en implementación de tecnologías emergentes para la automatización industrial inteligente.
                 </p>
             </div>
@@ -1034,6 +1895,604 @@
 
     <!-- Effects -->
     <script src="js/effects/particles.js"></script>
+
+    <!-- SVG Load Validation and Interactivity -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const orgChartSvg = document.querySelector('.org-chart-svg');
+            if (orgChartSvg) {
+                console.log('✅ Organizational chart SVG loaded successfully');
+                console.log('SVG dimensions:', orgChartSvg.getBoundingClientRect());
+
+                // Test responsiveness
+                window.addEventListener('resize', function () {
+                    console.log('SVG resized:', orgChartSvg.getBoundingClientRect());
+                });
+
+                // Validate SVG elements
+                const svgElements = orgChartSvg.querySelectorAll('rect, text, line, circle');
+                console.log(`Found ${svgElements.length} SVG elements`);
+
+                // Check for any missing elements
+                const requiredElements = ['CEO', 'COO', 'Desarrollo', 'IA & ML', 'Automatización', 'Consultoría'];
+                requiredElements.forEach(element => {
+                    const found = orgChartSvg.textContent.includes(element);
+                    console.log(`${found ? '✅' : '❌'} ${element} found in SVG`);
+                });
+
+                // Add interactivity to CEO and COO boxes
+                initializeOrgChartInteractivity();
+            } else {
+                console.error('❌ Organizational chart SVG not found');
+            }
+        });
+
+        function showDetailedOrgChart(executive) {
+            const initialView = document.getElementById('initialView');
+            const detailedView = document.getElementById('detailedView');
+            const detailedTitle = document.getElementById('detailedTitle');
+
+            // Hide initial view and show detailed view
+            initialView.style.display = 'none';
+            detailedView.style.display = 'block';
+
+            // Update title based on executive
+            detailedTitle.textContent = `Estructura Organizacional - Liderada por ${executive}`;
+
+            // Initialize interactivity for the detailed view
+            setTimeout(() => {
+                initializeOrgChartInteractivity();
+            }, 100);
+        }
+
+        function showInitialView() {
+            const initialView = document.getElementById('initialView');
+            const detailedView = document.getElementById('detailedView');
+
+            // Show initial view and hide detailed view
+            initialView.style.display = 'block';
+            detailedView.style.display = 'none';
+        }
+
+        function initializeOrgChartInteractivity() {
+            const svg = document.querySelector('.org-chart-svg');
+
+            if (!svg) return;
+
+            // Add classes to CEO and COO boxes for styling
+            const ceoRect = svg.querySelector('rect[x="250"]');
+            const cooRect = svg.querySelector('rect[x="670"]');
+
+            if (ceoRect) ceoRect.classList.add('ceo-box');
+            if (cooRect) cooRect.classList.add('coo-box');
+
+            // Add click handlers to all rectangles
+            const allRects = svg.querySelectorAll('rect');
+            allRects.forEach(rect => {
+                rect.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    const bbox = rect.getBBox();
+                    const centerX = bbox.x + bbox.width / 2;
+                    const centerY = bbox.y + bbox.height / 2;
+
+                    // Determine which element was clicked based on position
+                    let clickedElement = null;
+
+                    if (centerX < 400) {
+                        clickedElement = 'CEO';
+                    } else if (centerX > 600) {
+                        clickedElement = 'COO';
+                    } else {
+                        // Functional areas - determine by Y position
+                        if (centerY > 400) {
+                            // Row 1 or Row 2
+                            if (centerY < 520) {
+                                // Row 1
+                                if (centerX < 300) clickedElement = 'Desarrollo';
+                                else if (centerX < 430) clickedElement = 'IA & ML';
+                                else if (centerX < 560) clickedElement = 'Automatización';
+                                else clickedElement = 'Consultoría';
+                            } else {
+                                // Row 2
+                                if (centerX < 300) clickedElement = 'Soporte';
+                                else if (centerX < 430) clickedElement = 'Documentación';
+                                else if (centerX < 560) clickedElement = 'Administración';
+                                else clickedElement = 'Ventas';
+                            }
+                        }
+                    }
+
+                    if (clickedElement) {
+                        showOrgModal(clickedElement);
+                    }
+                });
+            });
+        }
+
+        function showOrgModal(elementType) {
+            // Remove existing modal if any
+            const existingModal = document.querySelector('.org-modal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            // Create modal content based on element type
+            const modalData = getModalData(elementType);
+
+            // Create modal HTML
+            const modalHTML = `
+                <div class="org-modal show" id="orgModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">${modalData.title}</h2>
+                            <button class="modal-close" onclick="closeOrgModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-section">
+                                <h3>Descripción</h3>
+                                <p>${modalData.description}</p>
+                            </div>
+                            ${modalData.responsibilities ? `
+                            <div class="modal-section">
+                                <h3>Responsabilidades</h3>
+                                <ul>
+                                    ${modalData.responsibilities.map(resp => `<li>${resp}</li>`).join('')}
+                                </ul>
+                            </div>
+                            ` : ''}
+                            ${modalData.projects ? `
+                            <div class="modal-section">
+                                <h3>Proyectos Relacionados</h3>
+                                <ul>
+                                    ${modalData.projects.map(project => `<li>${project}</li>`).join('')}
+                                </ul>
+                            </div>
+                            ` : ''}
+                            ${modalData.contact ? `
+                            <div class="modal-section">
+                                <h3>Contacto</h3>
+                                <p><strong>${modalData.contact.name}</strong><br>
+                                ${modalData.contact.position}<br>
+                                <a href="mailto:${modalData.contact.email}">📧 ${modalData.contact.email}</a><br>
+                                <a href="tel:${modalData.contact.phone}">📞 ${modalData.contact.phone}</a></p>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add modal to body
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+            // Add click outside to close
+            document.getElementById('orgModal').addEventListener('click', function (event) {
+                if (event.target === this) {
+                    closeOrgModal();
+                }
+            });
+
+            // Add escape key handler
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    closeOrgModal();
+                }
+            });
+        }
+
+        function closeOrgModal() {
+            const modal = document.getElementById('orgModal');
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            }
+        }
+
+        function showGartnerDetailedView(metricType) {
+            const initialView = document.getElementById('gartnerInitialView');
+            const detailedView = document.getElementById('gartnerDetailedView');
+            const detailedTitle = document.getElementById('gartnerDetailedTitle');
+
+            // Hide initial view and show detailed view
+            initialView.style.display = 'none';
+            detailedView.style.display = 'block';
+
+            // Hide all metric views first
+            document.querySelectorAll('.gartner-view').forEach(view => {
+                view.style.display = 'none';
+            });
+
+            // Show the selected metric view
+            const selectedView = document.getElementById(metricType + 'View');
+            if (selectedView) {
+                selectedView.style.display = 'block';
+            }
+
+            // Update title based on metric type
+            const titles = {
+                'quadrant': 'Cuadrante Mágico de Gartner',
+                'evolution': 'Evolución de Capacidades',
+                'solutions': 'Comparativa de Soluciones',
+                'market': 'Proyección de Mercado',
+                'analysis': 'Análisis Estratégico'
+            };
+            detailedTitle.textContent = titles[metricType] || 'Métricas Gartner';
+
+            // Initialize charts if needed
+            setTimeout(() => {
+                initializeGartnerCharts(metricType);
+            }, 100);
+        }
+
+        function showGartnerInitialView() {
+            const initialView = document.getElementById('gartnerInitialView');
+            const detailedView = document.getElementById('gartnerDetailedView');
+
+            // Show initial view and hide detailed view
+            initialView.style.display = 'block';
+            detailedView.style.display = 'none';
+        }
+
+        function initializeGartnerCharts(metricType) {
+            // Initialize specific charts based on the metric type
+            if (metricType === 'quadrant') {
+                initializeQuadrantChart();
+            } else if (metricType === 'evolution') {
+                initializeEvolutionChart();
+            } else if (metricType === 'solutions') {
+                initializeSolutionsChart();
+            } else if (metricType === 'market') {
+                initializeMarketChart();
+            }
+            // Analysis view doesn't need charts
+        }
+
+        function initializeQuadrantChart() {
+            const ctx = document.getElementById('gartnerQuadrant');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'GProA Technology',
+                        data: [{ x: 0.85, y: 0.75 }],
+                        backgroundColor: '#00e0ff',
+                        borderColor: '#00e0ff',
+                        borderWidth: 3,
+                        pointRadius: 8,
+                        pointHoverRadius: 12
+                    }, {
+                        label: 'Competidores',
+                        data: [
+                            { x: 0.6, y: 0.8 }, { x: 0.7, y: 0.6 }, { x: 0.5, y: 0.7 },
+                            { x: 0.8, y: 0.5 }, { x: 0.4, y: 0.6 }, { x: 0.65, y: 0.55 }
+                        ],
+                        backgroundColor: 'rgba(156, 163, 175, 0.6)',
+                        borderColor: 'rgba(156, 163, 175, 0.8)',
+                        borderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#e0f2fe' }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Posicionamiento en Cuadrante Mágico',
+                            color: '#e0f2fe',
+                            font: { size: 16 }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Capacidad de Ejecución',
+                                color: '#93c5fd'
+                            },
+                            min: 0,
+                            max: 1,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Completitud de Visión',
+                                color: '#93c5fd'
+                            },
+                            min: 0,
+                            max: 1,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeEvolutionChart() {
+            const ctx = document.getElementById('evolutionChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2021', '2022', '2023', '2024', '2025'],
+                    datasets: [{
+                        label: 'Crecimiento IA',
+                        data: [20, 45, 75, 120, 160],
+                        borderColor: '#00e0ff',
+                        backgroundColor: 'rgba(0, 224, 255, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Automatización',
+                        data: [15, 35, 65, 95, 125],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#e0f2fe' } },
+                        title: {
+                            display: true,
+                            text: 'Evolución de Capacidades (2021-2025)',
+                            color: '#e0f2fe'
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(148, 163, 184, 0.1)' } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(148, 163, 184, 0.1)' } }
+                    }
+                }
+            });
+        }
+
+        function initializeSolutionsChart() {
+            const ctx = document.getElementById('solutionsChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Innovación', 'Especialización', 'Escalabilidad', 'Integración', 'Soporte'],
+                    datasets: [{
+                        label: 'GProA Technology',
+                        data: [92, 88, 85, 90, 87],
+                        borderColor: '#00e0ff',
+                        backgroundColor: 'rgba(0, 224, 255, 0.2)',
+                        pointBackgroundColor: '#00e0ff',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#00e0ff'
+                    }, {
+                        label: 'Promedio Competidores',
+                        data: [75, 70, 78, 72, 80],
+                        borderColor: 'rgba(156, 163, 175, 0.8)',
+                        backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                        pointBackgroundColor: 'rgba(156, 163, 175, 0.8)',
+                        pointBorderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#e0f2fe' } },
+                        title: {
+                            display: true,
+                            text: 'Comparativa de Soluciones',
+                            color: '#e0f2fe'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            ticks: { color: '#94a3b8', backdropColor: 'transparent' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                            angleLines: { color: 'rgba(148, 163, 184, 0.1)' },
+                            pointLabels: { color: '#93c5fd' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeMarketChart() {
+            const ctx = document.getElementById('marketChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['2025', '2026', '2027', '2028', '2029'],
+                    datasets: [{
+                        label: 'Mercado IA Industrial (Miles de millones USD)',
+                        data: [47.2, 58.5, 72.1, 89.2, 110.3],
+                        backgroundColor: 'rgba(0, 224, 255, 0.6)',
+                        borderColor: '#00e0ff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#e0f2fe' } },
+                        title: {
+                            display: true,
+                            text: 'Proyección de Mercado IA Industrial',
+                            color: '#e0f2fe'
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(148, 163, 184, 0.1)' } },
+                        y: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                            title: {
+                                display: true,
+                                text: 'Miles de millones USD',
+                                color: '#93c5fd'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function getModalData(elementType) {
+            const data = {
+                'CEO': {
+                    title: 'Chief Executive Officer - CEO',
+                    description: 'Abdel Lugo Trejo es el fundador y CEO de GProA Technology. Líder visionario con amplia experiencia en desarrollo de software y automatización industrial.',
+                    responsibilities: [
+                        'Definir la visión estratégica de la empresa',
+                        'Liderar el desarrollo de productos tecnológicos',
+                        'Dirigir la dirección técnica y desarrollo',
+                        'Gestionar relaciones con clientes estratégicos'
+                    ],
+                    contact: {
+                        name: 'Juan Abdel Lugo Trejo',
+                        position: 'CEO – Desarrollo Tecnológico',
+                        email: 'trejulu@gproatechnology.com',
+                        phone: '+5214681208570'
+                    }
+                },
+                'COO': {
+                    title: 'Chief Operating Officer - COO',
+                    description: 'Israel Reséndiz Gálvez es el COO de GProA Technology. Responsable de la operación diaria y la estructura administrativa de la empresa.',
+                    responsibilities: [
+                        'Supervisar las operaciones diarias',
+                        'Gestionar la administración general',
+                        'Coordinar asuntos legales y cumplimiento normativo',
+                        'Administrar finanzas y contabilidad'
+                    ],
+                    contact: {
+                        name: 'Israel Aldair Reséndiz Gálvez',
+                        position: 'COO – Administración',
+                        email: 'admin@gproatechnology.com',
+                        phone: '+5214191296200'
+                    }
+                },
+                'Desarrollo': {
+                    title: 'Área de Desarrollo',
+                    description: 'Equipo especializado en desarrollo de software y aplicaciones tecnológicas avanzadas.',
+                    responsibilities: [
+                        'Desarrollo de aplicaciones web y móviles',
+                        'Implementación de arquitecturas full-stack',
+                        'Integración de APIs y servicios externos',
+                        'Optimización de rendimiento y escalabilidad'
+                    ],
+                    projects: [
+                        'GECRAI 1.1 - Generador de Consultas Regulatorias',
+                        'GIACELIA 1.1 - Plataforma de Ingeniería Automatizada',
+                        'Sistema Bufalos 2.0 - Gestión de Gimnasios'
+                    ]
+                },
+                'IA & ML': {
+                    title: 'Inteligencia Artificial y Machine Learning',
+                    description: 'Especialistas en IA generativa y algoritmos de aprendizaje automático aplicados a soluciones industriales.',
+                    responsibilities: [
+                        'Desarrollo de modelos de IA generativa',
+                        'Implementación de algoritmos de machine learning',
+                        'Procesamiento de lenguaje natural',
+                        'Análisis predictivo y optimización'
+                    ],
+                    projects: [
+                        'GECRAI - IA para consultas regulatorias',
+                        'GlucAI - Monitoreo de diabetes con IA',
+                        'SAIyDD - Aprendizaje inclusivo con IA'
+                    ]
+                },
+                'Automatización': {
+                    title: 'Automatización Industrial',
+                    description: 'Expertos en sistemas de control, automatización industrial y robótica inteligente.',
+                    responsibilities: [
+                        'Diseño de sistemas de control industrial',
+                        'Implementación de PLC y SCADA',
+                        'Automatización de procesos productivos',
+                        'Integración de sensores y actuadores'
+                    ],
+                    projects: [
+                        'GIACELIA - Control y Automatización Industrial',
+                        'Sistemas de control para manufactura',
+                        'Automatización de procesos logísticos'
+                    ]
+                },
+                'Consultoría': {
+                    title: 'Consultoría Estratégica',
+                    description: 'Equipo de consultores especializados en estrategia tecnológica y transformación digital.',
+                    responsibilities: [
+                        'Análisis estratégico de procesos',
+                        'Diseño de soluciones tecnológicas personalizadas',
+                        'Implementación de proyectos de transformación',
+                        'Capacitación y transferencia de conocimientos'
+                    ],
+                    projects: [
+                        'Consultoría en automatización industrial',
+                        'Estrategias de transformación digital',
+                        'Implementación de sistemas ERP/CRM'
+                    ]
+                },
+                'Soporte': {
+                    title: 'Soporte Técnico',
+                    description: 'Equipo dedicado al soporte técnico, mantenimiento y atención al cliente.',
+                    responsibilities: [
+                        'Soporte técnico a usuarios finales',
+                        'Mantenimiento preventivo y correctivo',
+                        'Resolución de incidentes y problemas',
+                        'Documentación técnica y capacitación'
+                    ]
+                },
+                'Documentación': {
+                    title: 'Documentación Técnica',
+                    description: 'Especialistas en documentación técnica, legal y regulatoria.',
+                    responsibilities: [
+                        'Elaboración de manuales técnicos',
+                        'Documentación de procesos y procedimientos',
+                        'Cumplimiento normativo y legal',
+                        'Gestión de documentación regulatoria'
+                    ]
+                },
+                'Administración': {
+                    title: 'Administración y Finanzas',
+                    description: 'Equipo responsable de la gestión administrativa, financiera y legal.',
+                    responsibilities: [
+                        'Gestión financiera y contable',
+                        'Administración de recursos humanos',
+                        'Cumplimiento legal y normativo',
+                        'Gestión de contratos y proveedores'
+                    ]
+                },
+                'Ventas': {
+                    title: 'Ventas y Marketing',
+                    description: 'Equipo comercial especializado en desarrollo de negocio y marketing digital.',
+                    responsibilities: [
+                        'Desarrollo de estrategias comerciales',
+                        'Gestión de relaciones con clientes',
+                        'Marketing digital y promoción',
+                        'Análisis de mercado y competencia'
+                    ]
+                }
+            };
+
+            return data[elementType] || {
+                title: elementType,
+                description: 'Información detallada próximamente.'
+            };
+        }
+    </script>
 </body>
 
 

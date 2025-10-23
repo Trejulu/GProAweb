@@ -31,6 +31,13 @@
     color: var(--cyan);
 }
 
+.nav-logo:hover {
+    color: #00e0ff;
+    text-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
 .nav-links {
     display: flex;
     gap: var(--spacing-lg);
