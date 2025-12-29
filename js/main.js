@@ -16,16 +16,14 @@ function initNavigation() {
     const mobileNav = document.querySelector('.mobile-nav');
     const closeMenuBtn = document.querySelector('.close-menu');
 
-    // Scroll effect en header con throttling
-    const throttledScrollHandler = throttle(() => {
+    // Scroll effect en header
+    window.addEventListener('scroll', () => {
         if (window.scrollY > 100) {
             header.style.background = 'rgba(10, 10, 10, 0.98)';
         } else {
             header.style.background = 'rgba(10, 10, 10, 0.95)';
         }
-    }, 16); // ~60fps
-
-    window.addEventListener('scroll', throttledScrollHandler);
+    });
 
     // Smooth scroll para enlaces de navegación
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -400,16 +398,5 @@ document.addEventListener('DOMContentLoaded', function () {
 // Inicializar partículas cuando se carga la página
 window.addEventListener('load', createParticles);
 
-// Utility functions
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    }
-}
+// Inicializar partículas cuando se carga la página
+window.addEventListener('load', createParticles);

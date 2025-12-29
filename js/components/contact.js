@@ -19,7 +19,6 @@ class ContactForm {
         if (this.form) {
             this.setupEmailJS();
             this.setupFormSubmission();
-            this.setupRealTimeValidation();
         }
     }
 
@@ -37,89 +36,6 @@ class ContactForm {
             e.preventDefault();
             this.handleSubmit();
         });
-    }
-
-    setupRealTimeValidation() {
-        const inputs = this.form.querySelectorAll('input, textarea, select');
-
-        inputs.forEach(input => {
-            input.addEventListener('blur', () => this.validateField(input));
-            input.addEventListener('input', () => this.clearFieldError(input));
-        });
-    }
-
-    validateField(field) {
-        const value = field.value.trim();
-        const fieldName = field.name || field.id;
-        let isValid = true;
-        let errorMessage = '';
-
-        switch (fieldName) {
-            case 'name':
-                if (!value) {
-                    isValid = false;
-                    errorMessage = 'El nombre es requerido';
-                } else if (value.length < 2) {
-                    isValid = false;
-                    errorMessage = 'El nombre debe tener al menos 2 caracteres';
-                }
-                break;
-            case 'email':
-                if (!value) {
-                    isValid = false;
-                    errorMessage = 'El email es requerido';
-                } else if (!this.isValidEmail(value)) {
-                    isValid = false;
-                    errorMessage = 'Ingresa un email válido';
-                }
-                break;
-            case 'message':
-                if (!value) {
-                    isValid = false;
-                    errorMessage = 'El mensaje es requerido';
-                } else if (value.length < 10) {
-                    isValid = false;
-                    errorMessage = 'El mensaje debe tener al menos 10 caracteres';
-                }
-                break;
-        }
-
-        if (!isValid) {
-            this.showFieldError(field, errorMessage);
-        } else {
-            this.clearFieldError(field);
-        }
-
-        return isValid;
-    }
-
-    showFieldError(field, message) {
-        // Remover error anterior
-        this.clearFieldError(field);
-
-        // Agregar clase de error
-        field.classList.add('field-error');
-
-        // Crear mensaje de error
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'field-error-message';
-        errorDiv.textContent = message;
-        errorDiv.style.cssText = `
-            color: #ef4444;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            display: block;
-        `;
-
-        field.parentNode.appendChild(errorDiv);
-    }
-
-    clearFieldError(field) {
-        field.classList.remove('field-error');
-        const errorMessage = field.parentNode.querySelector('.field-error-message');
-        if (errorMessage) {
-            errorMessage.remove();
-        }
     }
 
     handleSubmit() {
@@ -150,25 +66,23 @@ class ContactForm {
     }
 
     validateForm(data) {
-        let isValid = true;
-        const fields = ['name', 'email', 'message'];
+        // Campos requeridos
+        const requiredFields = ['from_name', 'from_email', 'industry', 'message'];
 
-        // Validar campos individuales
-        fields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field && !this.validateField(field)) {
-                isValid = false;
+        for (const field of requiredFields) {
+            if (!data[field]) {
+                this.showNotification('Por favor, completa todos los campos requeridos.', 'error');
+                return false;
             }
-        });
-
-        // Validar select industry si existe
-        const industrySelect = document.getElementById('industry');
-        if (industrySelect && !industrySelect.value) {
-            this.showFieldError(industrySelect, 'Selecciona un sector');
-            isValid = false;
         }
 
-        return isValid;
+        // Validar email
+        if (!this.isValidEmail(data.from_email)) {
+            this.showNotification('Por favor ingresa un email válido.', 'error');
+            return false;
+        }
+
+        return true;
     }
 
     isValidEmail(email) {
