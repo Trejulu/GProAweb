@@ -1,0 +1,12 @@
+{
+  "name": "gproa-webp-converter",
+  "version": "1.0.0",
+  "description": "Script para convertir imágenes a formato WebP",
+  "main": "convert-to-webp.js",
+  "scripts": {
+    "convert": "node convert-to-webp.js"
+  },
+  "dependencies": {
+    "sharp": "^0.32.6"
+  }
+}

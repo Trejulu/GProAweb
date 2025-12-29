@@ -8,10 +8,14 @@
 
     <!-- SEO Meta Tags -->
     <meta name="description"
-        content="GProA Technology - Líderes en automatización inteligente y desarrollo de software con IA">
+        content="GProA Technology - Líderes en automatización inteligente y desarrollo de software con IA. Soluciones innovadoras en ingeniería eléctrica, salud y educación con IA generativa.">
     <meta name="keywords"
-        content="IA, automatización, software, tecnología, ingeniería, GECRAI, GIACELIA, GlucAI, SAIyDD">
+        content="IA, automatización industrial, software con IA, ingeniería eléctrica, desarrollo de software, GECRAI, GIACELIA, GlucAI, SAIyDD, automatización cognitiva, IA generativa, gemelos digitales, mantenimiento predictivo">
     <meta name="author" content="GProA Technology">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Spanish">
+    <meta name="geo.region" content="MX-GUA">
+    <meta name="geo.placename" content="San José Iturbide">
     <link rel="canonical" href="https://gproatechnology.com/">
 
     <!-- Open Graph / Facebook -->
@@ -37,33 +41,317 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//cdn.socket.io">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
 
     <!-- Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
+        rel="stylesheet" media="print" onload="this.media='all'">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- CSS Organizados -->
-    <!-- Base -->
-    <link rel="stylesheet" href="css/base/variables.css">
-    <link rel="stylesheet" href="css/base/reset.css">
+    <!-- Critical CSS (Above the Fold) -->
+    <style>
+    /* GProA Technology - Critical CSS (Above the Fold) */
 
-    <!-- Layout -->
-    <link rel="stylesheet" href="css/layout/navigation.css">
-    <link rel="stylesheet" href="css/layout/footer.css">
+    /* Variables CSS */
+    :root {
+        --primary-color: #00d4ff;
+        --secondary-color: #8a2be2;
+        --accent-color: #ff6b35;
+        --bg-dark: #0a0a0a;
+        --bg-secondary: #1a1a1a;
+        --bg-card: rgba(255, 255, 255, 0.05);
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-muted: #808080;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --shadow-glow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
 
-    <!-- Components -->
-    <link rel="stylesheet" href="css/components/hero.css">
-    <link rel="stylesheet" href="css/components/sections.css">
-    <link rel="stylesheet" href="css/components/contact.css">
-    <link rel="stylesheet" href="css/components/modals.css">
-    <link rel="stylesheet" href="css/components/gartner.css">
+    /* Reset y base */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-    <!-- Effects -->
-    <link rel="stylesheet" href="css/effects/animations.css">
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    /* Header y navegación */
+    .main-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 1000;
+        transition: all 0.3s ease;
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 80px;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-decoration: none;
+    }
+
+    .logo span {
+        color: var(--primary-color);
+    }
+
+    .main-nav ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    .main-nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        position: relative;
+    }
+
+    .main-nav a:hover {
+        color: var(--primary-color);
+    }
+
+    .main-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+    }
+
+    .main-nav a:hover::after {
+        width: 100%;
+    }
+
+    .mobile-menu-btn {
+        display: none;
+        flex-direction: column;
+        background: none;
+        border: none;
+        cursor: pointer;
+        gap: 4px;
+    }
+
+    .mobile-menu-btn span {
+        width: 25px;
+        height: 3px;
+        background: var(--text-primary);
+        transition: all 0.3s ease;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-secondary) 100%);
+        position: relative;
+        overflow: hidden;
+        padding: 100px 20px 50px;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .hero-content {
+        max-width: 1200px;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-subtitle-container {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .hero-subtitle {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        opacity: 0;
+        position: absolute;
+        animation: fadeInOut 6s infinite;
+    }
+
+    .hero-subtitle:nth-child(2) {
+        animation-delay: 2s;
+    }
+
+    .hero-subtitle:nth-child(3) {
+        animation-delay: 4s;
+    }
+
+    .hero-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin: 60px 0;
+    }
+
+    .hero-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-glow);
+        border-color: var(--primary-color);
+    }
+
+    .hero-card i {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .hero-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+    }
+
+    .hero-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    .hero-tagline {
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        margin: 40px 0;
+        font-weight: 600;
+        letter-spacing: 2px;
+    }
+
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 15px 30px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(0, 212, 255, 0.4);
+    }
+
+    /* Animaciones críticas */
+    @keyframes fadeInOut {
+        0%, 100% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        20%, 80% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive crítico */
+    @media (max-width: 768px) {
+        .main-nav {
+            display: none;
+        }
+
+        .mobile-menu-btn {
+            display: flex;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+        }
+
+        .hero-cards {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+    }
+    </style>
+
+    <!-- Non-Critical CSS (Deferred) -->
+    <link rel="preload" href="css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/styles.css"></noscript>
 
     <style>
         /* Estilos para las gráficas */
@@ -645,9 +933,9 @@
         }
     </style>
     <!-- Chart.js para gráficas -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <!-- Socket.io para el chat en tiempo real -->
-    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js" defer></script>
 
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -767,9 +1055,28 @@
     <canvas class="matrix-rain"></canvas>
 
     <!-- Navegación -->
-    <nav class="main-nav">
-        <a href="analytics.html" class="nav-logo" title="Ver Analíticas de GProA">GProA<span>Technology</span></a>
-        <div class="nav-links">
+    <header>
+        <nav class="main-nav" role="navigation" aria-label="Navegación principal">
+            <a href="analytics.html" class="nav-logo" title="Ver Analíticas de GProA" aria-label="Ir a página de analíticas">GProA<span>Technology</span></a>
+            <div class="nav-links">
+                <a href="#inicio" class="nav-link">Inicio</a>
+                <a href="#servicios" class="nav-link">Servicios</a>
+                <a href="#tecnologias" class="nav-link">Tecnologías</a>
+                <a href="#proyectos" class="nav-link">Proyectos</a>
+                <a href="#metricas" class="nav-link">Métricas Gartner</a>
+                <a href="#equipo" class="nav-link">Equipo</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú de navegación" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </nav>
+
+        <!-- Navegación móvil -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </div>
             <a href="#inicio" class="nav-link">Inicio</a>
             <a href="#servicios" class="nav-link">Servicios</a>
             <a href="#tecnologias" class="nav-link">Tecnologías</a>
@@ -778,29 +1085,12 @@
             <a href="#equipo" class="nav-link">Equipo</a>
             <a href="#contacto" class="nav-link">Contacto</a>
         </div>
-        <div class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </div>
-    </nav>
+    </header>
 
-    <!-- Navegación móvil -->
-    <div class="mobile-nav" id="mobileNav">
-        <div class="close-menu" id="closeMenu">
-            <i class="fas fa-times"></i>
-        </div>
-        <a href="#inicio" class="nav-link">Inicio</a>
-        <a href="#servicios" class="nav-link">Servicios</a>
-        <a href="#tecnologias" class="nav-link">Tecnologías</a>
-        <a href="#proyectos" class="nav-link">Proyectos</a>
-        <a href="#metricas" class="nav-link">Métricas Gartner</a>
-        <a href="#documentacion" class="nav-link">Documentación</a>
-        <a href="#documentacion" class="nav-link">Documentación</a>
-        <a href="#equipo" class="nav-link">Equipo</a>
-        <a href="#contacto" class="nav-link">Contacto</a>
-    </div>
-
-    <!-- Hero Section -->
-    <section class="quantum-portal" id="inicio">
+    <!-- Contenido Principal -->
+    <main>
+        <!-- Hero Section -->
+        <section class="quantum-portal" id="inicio">
         <canvas id="particleCanvas"></canvas>
 
         <div class="execution-sphere" id="execSphere">
@@ -856,14 +1146,14 @@
 
         <div class="version-badge">INNOVACIÓN EN DESARROLLO DE SOFTWARE</div>
 
-        <a href="#servicios" class="scroll-down">
+        <a href="#servicios" class="scroll-down" aria-label="Desplazarse a la sección de servicios">
             <span>Explorar</span>
-            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
         </a>
     </section>
 
     <!-- Servicios -->
-    <section class="content-section" id="servicios">
+    <article class="content-section" id="servicios">
         <div class="section-title">
             <h2>Soluciones Inteligentes con Impacto</h2>
             <p>En GProA integramos tecnologías emergentes para diseñar soluciones que transforman industrias y mejoran
@@ -907,10 +1197,10 @@
                 </ul>
             </div>
         </div>
-    </section>
+    </article>
 
     <!-- Tecnologías -->
-    <section class="content-section" id="tecnologias">
+    <article class="content-section" id="tecnologias">
         <div class="section-title">
             <h2>Desarrollo Tecnológico Avanzado</h2>
             <p>En GProA aplicamos metodologías ágiles y tecnologías emergentes para construir soluciones escalables,
@@ -954,10 +1244,10 @@
                     escalan automáticamente y están listas para producción.</p>
             </div>
         </div>
-    </section>
+    </article>
 
     <!-- Proyectos -->
-    <section class="content-section" id="proyectos">
+    <article class="content-section" id="proyectos">
         <div class="section-title">
             <h2>Proyectos de Innovación en IA</h2>
             <p>Soluciones avanzadas desarrolladas por nuestro equipo para transformar industrias y procesos</p>
@@ -1091,7 +1381,7 @@
     </section>
 
     <!-- Métricas Gartner -->
-    <section class="content-section" id="metricas">
+    <article class="content-section" id="metricas">
         <div class="section-title">
             <h2>Análisis de Mercado y Métricas Gartner</h2>
             <p>Evaluamos nuestra posición en el mercado utilizando métricas de referencia y análisis comparativos de
@@ -1361,7 +1651,7 @@
     </section>
 
     <!-- Equipo -->
-    <section class="content-section" id="equipo">
+    <article class="content-section" id="equipo">
         <div class="section-title">
             <h2>Equipo de Innovación</h2>
             <p>Expertos comprometidos con el desarrollo de tecnologías accesibles y funcionales para sectores
@@ -1374,7 +1664,7 @@
                 <div class="executive-buttons">
                     <button class="executive-btn ceo-btn" onclick="showDetailedOrgChart('CEO')">
                         <div class="executive-image">
-                            <img src="CEO.png" alt="Abdel Lugo Trejo - CEO" class="executive-photo">
+                            <img src="CEO.png" alt="Abdel Lugo Trejo - CEO" class="executive-photo" loading="lazy">
                         </div>
                         <div class="executive-info">
                             <h3>CEO</h3>
@@ -1384,7 +1674,7 @@
                     </button>
                     <button class="executive-btn coo-btn" onclick="showDetailedOrgChart('COO')">
                         <div class="executive-image">
-                            <img src="COO.png" alt="Israel Reséndiz Gálvez - COO" class="executive-photo">
+                            <img src="COO.png" alt="Israel Reséndiz Gálvez - COO" class="executive-photo" loading="lazy">
                         </div>
                         <div class="executive-info">
                             <h3>COO</h3>
@@ -1730,6 +2020,8 @@
             </div>
         </div>
     </section>
+
+    </main>
 
     <!-- Footer -->
     <footer class="main-footer">
